@@ -1,5 +1,7 @@
 package fso.trab1.comunicacao;
 
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import robot.RobotLegoEV3;
@@ -8,7 +10,8 @@ public class Evitar extends Administrador{
 	JTextArea textAreaConsola;
 	private RobotLegoEV3 r;
 	
-	public void evitar() {
+	public void executar() {
+		gui_evitar();
 		try {
 			Thread.sleep(250);
 		} catch (InterruptedException e) {
@@ -16,7 +19,7 @@ public class Evitar extends Administrador{
 			e.printStackTrace();
 		}
 		if(r.SensorToque(RobotLegoEV3.S_1)==1) {
-			for (int i = 0; i < 6; i++) {
+			for (int i = 0; i < 4; i++) {
 				
 				switch(i) {
 				case 0:
@@ -35,5 +38,24 @@ public class Evitar extends Administrador{
 			}
 		}
 	}
+	
+	public void gui_evitar() {
 
+		JFrame frmGuiDoEvitar = new JFrame();
+		frmGuiDoEvitar.setTitle("GUI do Evitar");
+		frmGuiDoEvitar.setBounds(550, 400, 449, 290);
+		frmGuiDoEvitar.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frmGuiDoEvitar.getContentPane().setLayout(null);
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(15, 20, 402, 200);
+		frmGuiDoEvitar.getContentPane().add(scrollPane);
+
+		textAreaConsola = new JTextArea();
+		scrollPane.setViewportView(textAreaConsola);
+
+		frmGuiDoEvitar.setResizable(false);
+		frmGuiDoEvitar.setVisible(true);
+
+	}
 }
