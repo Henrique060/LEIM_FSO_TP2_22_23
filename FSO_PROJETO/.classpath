@@ -2,8 +2,5 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/CanalComu"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Evitar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Vaguear"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -439,22 +439,22 @@ public class GuiApp implements ActionListener, KeyListener, Runnable{
 			public void actionPerformed(ActionEvent e) {
 				if(chckbxVaguear.isSelected() && !chckbxEvitar.isSelected()) {
 					textAreaConsola.append("\r" + "Vaguear..." + "\n");
-					serv.createVaguear();
+					//serv.createVaguear();
 				}
 				else if(chckbxVaguear.isSelected() && chckbxEvitar.isSelected()) {
 					textAreaConsola.append("\r" + "Vaguear e Evitar selecionados" + "\n");
-					serv.destroyEvitar();
-					serv.createEvitar();
-					serv.createVaguear();
+					//serv.destroyEvitar();
+					//serv.createEvitar();
+					//serv.createVaguear();
 				}
 				else if(chckbxEvitar.isSelected() && !chckbxVaguear.isSelected()) {
 					textAreaConsola.append("\r" + "Evitar..." + "\n");
-					serv.destroyVaguear();
-					serv.destroyEvitar();
-					serv.createEvitar();
+					//serv.destroyVaguear();
+					//serv.destroyEvitar();
+					//serv.createEvitar();
 				}
 				else {
-					serv.destroyVaguear();
+					//serv.destroyVaguear();
 				}
 			}
 		});
@@ -466,23 +466,23 @@ public class GuiApp implements ActionListener, KeyListener, Runnable{
 			public void actionPerformed(ActionEvent e) {
 				if(chckbxEvitar.isSelected() && !chckbxVaguear.isSelected()) {
 					textAreaConsola.append("\r" + "Evitar..." + "\n");
-					serv.createEvitar();
+					//serv.createEvitar();
 				}
 				else if(chckbxVaguear.isSelected() && chckbxEvitar.isSelected()) {
 					textAreaConsola.append("\r" + "Evitar e Vaguear selecionados" + "\n");
-					serv.destroyVaguear();
-					serv.createEvitar();
-					serv.createVaguear();
+					//serv.destroyVaguear();
+					//serv.createEvitar();
+					//serv.createVaguear();
 				}
 				else if(chckbxVaguear.isSelected() && !chckbxEvitar.isSelected()) {
 					textAreaConsola.append("\r" + "Vaguear..." + "\n");
-					serv.destroyEvitar();
+					//serv.destroyEvitar();
 					//ge.frmGuiDoEvitar.dispose();
-					serv.destroyVaguear();
-					serv.createVaguear();
+					//serv.destroyVaguear();
+					//serv.createVaguear();
 				}
 				else {
-					serv.destroyEvitar();
+					//serv.destroyEvitar();
 				}
 			}
 		});
