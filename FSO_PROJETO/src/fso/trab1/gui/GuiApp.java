@@ -20,6 +20,8 @@ import javax.swing.JTextField;
 
 import fso.trab1.servidor.Servidor;
 
+import fso.trab1.comunicacao.*;
+
 public class GuiApp implements ActionListener, KeyListener, Runnable{
 
 	/*
@@ -42,6 +44,8 @@ public class GuiApp implements ActionListener, KeyListener, Runnable{
 	public JCheckBox chckbxVaguear;
 	public JCheckBox chckbxEvitar;
 	private Servidor serv;
+	
+	private Vaguear vaguear;
 			
 	public Servidor getServidor() {
 		return serv;
@@ -437,21 +441,11 @@ public class GuiApp implements ActionListener, KeyListener, Runnable{
 		chckbxVaguear = new JCheckBox("Vaguear");
 		chckbxVaguear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(chckbxVaguear.isSelected() && !chckbxEvitar.isSelected()) {
+				if(chckbxVaguear.isSelected()) {
 					textAreaConsola.append("\r" + "Vaguear..." + "\n");
 					//serv.createVaguear();
-				}
-				else if(chckbxVaguear.isSelected() && chckbxEvitar.isSelected()) {
-					textAreaConsola.append("\r" + "Vaguear e Evitar selecionados" + "\n");
-					//serv.destroyEvitar();
-					//serv.createEvitar();
-					//serv.createVaguear();
-				}
-				else if(chckbxEvitar.isSelected() && !chckbxVaguear.isSelected()) {
-					textAreaConsola.append("\r" + "Evitar..." + "\n");
-					//serv.destroyVaguear();
-					//serv.destroyEvitar();
-					//serv.createEvitar();
+					vaguear.vaguear();
+					
 				}
 				else {
 					//serv.destroyVaguear();
