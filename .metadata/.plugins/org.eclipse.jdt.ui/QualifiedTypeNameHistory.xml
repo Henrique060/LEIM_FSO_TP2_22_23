@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="java.awt.event.WindowAdapter"/>
+    <fullyQualifiedTypeName name="java.awt.event.WindowEvent"/>
+    <fullyQualifiedTypeName name="canal.CanalComunicacaoMensagens"/>
+    <fullyQualifiedTypeName name="canal.CanalComunicacaoLock"/>
+    <fullyQualifiedTypeName name="mensagens.MensagemCurvaEsq"/>
+    <fullyQualifiedTypeName name="fso.trab1.canal.CanalComunicacaoMensagens"/>
+    <fullyQualifiedTypeName name="fso.trab1.canal.mensagens.Mensagem"/>
+    <fullyQualifiedTypeName name="fso.trab1.canal.mensagens.MensagemParar"/>
+    <fullyQualifiedTypeName name="fso.trab1.canal.mensagens.MensagemReta"/>
+    <fullyQualifiedTypeName name="fso.trab1.canal.mensagens.MensagemCurvaEsq"/>
+    <fullyQualifiedTypeName name="fso.trab1.canal.mensagens.MensagemToque"/>
+    <fullyQualifiedTypeName name="fso.trab1.canal.mensagens.MensagemIniciarWorkflow"/>
+    <fullyQualifiedTypeName name="fso.trab1.canal.mensagens.MensagemFimWorkflow"/>
+    <fullyQualifiedTypeName name="fso.trab1.guivaguear.Guivaguear"/>
+    <fullyQualifiedTypeName name="fso.trab1.guievitar.Guievitar"/>
+    <fullyQualifiedTypeName name="java.lang.System"/>
+    <fullyQualifiedTypeName name="javax.swing.JFrame"/>
+    <fullyQualifiedTypeName name="javax.swing.JButton"/>
+    <fullyQualifiedTypeName name="fso.trab1.gui.GuiApp"/>
+    <fullyQualifiedTypeName name="fso.trab1.evitar.Evitar"/>
+    <fullyQualifiedTypeName name="fso.trab1.vaguear.Vaguear"/>
+    <fullyQualifiedTypeName name="fso.trab1.servidor.Servidor"/>
+    <fullyQualifiedTypeName name="java.awt.Robot"/>
+    <fullyQualifiedTypeName name="robot.RobotLegoEV3"/>
+    <fullyQualifiedTypeName name="java.util.Random"/>
+</qualifiedTypeNameHistroy>

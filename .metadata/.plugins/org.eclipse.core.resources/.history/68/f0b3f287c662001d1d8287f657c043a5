@@ -1,0 +1,167 @@
+package fso.trab1.evitar;
+
+import java.awt.Robot;
+import java.util.Random;
+
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
+import fso.trab1.canal.CanalComunicacaoMensagens;
+import fso.trab1.canal.mensagens.Mensagem;
+import fso.trab1.canal.mensagens.MensagemCurvaEsq;
+import fso.trab1.canal.mensagens.MensagemFimWorkflow;
+import fso.trab1.canal.mensagens.MensagemIniciarWorkflow;
+import fso.trab1.canal.mensagens.MensagemParar;
+import fso.trab1.canal.mensagens.MensagemReta;
+import fso.trab1.canal.mensagens.MensagemToque;
+import robot.RobotLegoEV3;
+
+public class Evitar {
+
+	private CanalComunicacaoMensagens canalServ;
+	private CanalComunicacaoMensagens canalEvi;
+	private Random rnd;
+	private Mensagem msg;
+	private int idP;
+	JTextArea textAreaConsola;
+	RobotLegoEV3 r = new RobotLegoEV3();
+
+	public Evitar(String[] args) {
+		this.rnd = new Random();
+		this.canalServ = this.getCanal();
+		this.canalServ.abrirCanal(args[0]);
+
+		this.canalEvi = this.getCanal();
+		this.canalEvi.abrirCanal(args[1]);
+		this.idP = rnd.nextInt(52) + 1;
+
+	}
+
+	private CanalComunicacaoMensagens getCanal() {
+		CanalComunicacaoMensagens channel = new CanalComunicacaoMensagens();
+		return channel;
+	}
+
+	public void run() throws InterruptedException {
+
+		for (;;) {
+
+			//Thread.sleep(250);
+
+			//this.msg = new MensagemToque((short) 0, (short) 0, (short) idP);
+			this.msg  = new MensagemToque((short) 1, (short) r.SensorToque(0), (short) 0);
+
+			this.canalServ.enviarMensagem(this.msg);
+			textAreaConsola.append("\r" + msg.toString() + "\n");
+
+			this.msg = canalEvi.receberMensagemM();
+			if (this.msg != null) {
+				textAreaConsola.append("\r" + msg.toString() + "\n");
+				if (this.msg.getParam2() == 1) {
+					this.idP = rnd.nextInt(502) + 1;
+
+					for (int i = 0; i < 5; i++) {
+						
+						switch(i) {
+						case 0:
+							this.msg = new MensagemIniciarWorkflow((short) idP);
+							break;
+						case 1:
+							this.msg = new MensagemParar((short) 0, (short) idP);
+							break;
+						case 2:
+							this.msg = new MensagemReta((short) -15, (short) idP);
+							break;
+						case 3:
+							this.msg = new MensagemCurvaEsq((short) 0, (short) 90, (short) idP);
+							break;
+						case 4:
+							this.msg = new MensagemParar((short) 1, (short) idP);
+							break;
+						case 5:
+							this.msg = new MensagemFimWorkflow((short) idP);
+							break;
+						}
+						
+						boolean res;
+						do {
+							res = this.canalServ.enviarMensagem(this.msg);
+							textAreaConsola.append("\r" + msg.toString() + "\n");
+						} while(!res);
+						
+						try {
+							Thread.sleep(450 + rnd.nextInt(750));
+						} catch (InterruptedException e) {
+							System.out.println("Fui acordado...");
+						}
+						
+						/*Mensagem iniciarWorkflow = new MensagemIniciarWorkflow((short) idP);
+						Mensagem parar = new MensagemParar((short) 0, (short) idP);
+						Mensagem reta = new MensagemReta((short) -15, (short) idP);
+						Mensagem curvaEsquerda = new MensagemCurvaEsq((short) 0, (short) 90, (short) idP);
+						Mensagem parar2 = new MensagemParar((short) 1, (short) idP);
+						Mensagem pararWorkflow = new MensagemFimWorkflow((short) idP);
+
+						this.canalServ.enviarMensagem(iniciarWorkflow);
+						textAreaConsola.append("\r" + iniciarWorkflow.toString() + "\n");
+						this.canalServ.enviarMensagem(parar);
+						textAreaConsola.append("\r" + parar.toString() + "\n");
+						this.canalServ.enviarMensagem(reta);
+						textAreaConsola.append("\r" + reta.toString() + "\n");
+						this.canalServ.enviarMensagem(curvaEsquerda);
+						textAreaConsola.append("\r" + curvaEsquerda.toString() + "\n");
+						this.canalServ.enviarMensagem(parar2);
+						textAreaConsola.append("\r" + parar2.toString() + "\n");
+						this.canalServ.enviarMensagem(pararWorkflow);
+						textAreaConsola.append("\r" + pararWorkflow.toString() + "\n");
+						escrever(iniciarWorkflow);
+						escrever(parar2);
+						escrever(reta);
+						escrever(curvaEsquerda);
+						escrever(parar);
+						escrever(pararWorkflow);
+
+						Thread.sleep(1000);*/
+					}
+				}
+			}
+			Thread.sleep(250);
+		}
+	}
+
+	public void gui_evitar() {
+
+		JFrame frmGuiDoEvitar = new JFrame();
+		frmGuiDoEvitar.setTitle("GUI do Evitar");
+		frmGuiDoEvitar.setBounds(550, 400, 449, 290);
+		frmGuiDoEvitar.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frmGuiDoEvitar.getContentPane().setLayout(null);
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(15, 20, 402, 200);
+		frmGuiDoEvitar.getContentPane().add(scrollPane);
+
+		textAreaConsola = new JTextArea();
+		scrollPane.setViewportView(textAreaConsola);
+
+		frmGuiDoEvitar.setResizable(false);
+		frmGuiDoEvitar.setVisible(true);
+
+	}
+
+	public static void main(String[] args) throws InterruptedException {
+		Evitar e = new Evitar(args);
+		System.out.println("Evitar...");
+		e.gui_evitar();
+		e.run();
+	}
+
+	public void escrever(Mensagem m) throws InterruptedException {
+		do {
+			Thread.sleep(100);
+			textAreaConsola.append("\r" + m.toString() + "\n");
+		} while (canalServ.enviarMensagem(m));
+	}
+
+}
