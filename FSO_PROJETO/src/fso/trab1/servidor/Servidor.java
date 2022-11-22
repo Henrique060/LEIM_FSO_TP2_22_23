@@ -1,11 +1,12 @@
 package fso.trab1.servidor;
 
 import robot.RobotLegoEV3;
+
 import java.awt.EventQueue;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
-import fso.trab1.gui.GuiApp;
+import fso.trab1.gui.Guiapp;
 
 public class Servidor implements Runnable {
 	private String nome;
@@ -66,7 +67,7 @@ public class Servidor implements Runnable {
 	public void ligarRobo() {
 		r.OpenEV3(getNome());
 	}
-
+	
 	public void fecharRobo() {
 		if (processoEvitar == null && processoVaguear == null) {
 			r.Parar(true);
@@ -140,7 +141,7 @@ public class Servidor implements Runnable {
 	public static void main(String[] args) throws InvocationTargetException, InterruptedException {
 
 		System.out.println("main chamado");
-		GuiApp g = new GuiApp();
+		Guiapp g = new Guiapp();
 		EventQueue.invokeAndWait(g);
 		System.out.println("antes de g run");
 		g.getServidor().run();
