@@ -512,6 +512,10 @@ public class GuiApp implements ActionListener, KeyListener, Runnable{
 		textAreaConsola = new JTextArea();
 		scrollPane.setViewportView(textAreaConsola);
 		
+		JCheckBox chckbxNewCheckBox = new JCheckBox("Fugir");
+		chckbxNewCheckBox.setBounds(337, 189, 93, 21);
+		frmGuiDoServidor.getContentPane().add(chckbxNewCheckBox);
+		
 		/*Fica disabled quando se da run a gui até o robot não ligar*/
 		/*
 		 * textAreaConsola.setEditable(false); textDist.setEnabled(false);
@@ -553,5 +557,4 @@ public class GuiApp implements ActionListener, KeyListener, Runnable{
 		serv = new Servidor();
 		
 	}
-	
 }
