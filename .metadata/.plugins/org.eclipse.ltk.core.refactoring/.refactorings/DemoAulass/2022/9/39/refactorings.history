@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring accessors="true" comment="Delete 3 elements from project &apos;DemoAula&apos;&#x0D;&#x0A;- Original project: &apos;DemoAula&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     bluecove-2.1.1-Mac-Linux.jar&#x0D;&#x0A;     bluecove-2.1.1-Windows.jar&#x0D;&#x0A;     RobotLegoEV3_2022.jar" description="Delete elements" element1="bluecove-2.1.1-Mac-Linux.jar" element2="bluecove-2.1.1-Windows.jar" element3="RobotLegoEV3_2022.jar" elements="0" flags="589830" id="org.eclipse.jdt.ui.delete" resources="3" stamp="1664277090186" subPackages="false" version="1.0"/>
-</session>

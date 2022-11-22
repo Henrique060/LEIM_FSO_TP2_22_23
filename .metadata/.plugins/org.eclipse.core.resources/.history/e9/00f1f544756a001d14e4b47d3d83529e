@@ -1,6 +1,0 @@
-package fso.trab1.comunicacao;
-
-public class Vaguear extends Comunicacao{
-	private Random rnd;
-
-}
