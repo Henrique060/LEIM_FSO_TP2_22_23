@@ -18,7 +18,7 @@ public class Evitar extends Administrador{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if(r.SensorToque(RobotLegoEV3.S_1)==1) {
+		if(r.SensorToque(r.S_1)==1) {
 			for (int i = 0; i < 6; i++) {
 				
 				switch(i) {
@@ -29,10 +29,10 @@ public class Evitar extends Administrador{
 					r.Reta(-15);
 					break;
 				case 2:
-					r.CurvarEsquerda(0, 90);
+					this.msg = new MensagemCurvaEsq((short) 0, (short) 90, (short) idP);
 					break;
 				case 3:
-					r.Parar(true);
+					this.msg = new MensagemParar((short) 0, (short) idP);
 					break;
 				}
 			}
