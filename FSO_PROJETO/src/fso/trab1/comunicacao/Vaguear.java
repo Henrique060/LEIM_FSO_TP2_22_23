@@ -8,7 +8,7 @@ import javax.swing.JTextArea;
 
 import robot.RobotLegoEV3;
 
-public class Vaguear extends Administrador {
+public class Vaguear{
 	private Random rnd;
 	JTextArea textAreaConsola;
 	private RobotLegoEV3 r;
@@ -32,11 +32,11 @@ public class Vaguear extends Administrador {
 			break;
 		case 1:
 			r.CurvarDireita(rand_raio, rand_angulo);
-			textAreaConsola.append("\r" +"Curva Direita com raio: "+ rand_raio+ " e ângulo" + rand_angulo+ "\n");
+			textAreaConsola.append("\r" +"Curva Direita com raio: "+ rand_raio+ " e ângulo: " + rand_angulo+ "\n");
 			break;
 		case 2:
 			r.CurvarEsquerda(rand_raio, rand_angulo);
-			textAreaConsola.append("\r" +"Curva Esquerda com raio: "+ rand_raio+ " e ângulo" + rand_angulo+ "\n");
+			textAreaConsola.append("\r" +"Curva Esquerda com raio: "+ rand_raio+ " e ângulo: " + rand_angulo+ "\n");
 			break;
 		}
 	}

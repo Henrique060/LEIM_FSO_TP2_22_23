@@ -6,7 +6,7 @@ import javax.swing.JTextArea;
 
 import robot.RobotLegoEV3;
 
-public class Evitar extends Administrador{
+public class Evitar{
 	JTextArea textAreaConsola;
 	private RobotLegoEV3 r;
 	
@@ -24,15 +24,19 @@ public class Evitar extends Administrador{
 				switch(i) {
 				case 0:
 					r.Parar(true);
+					textAreaConsola.append("\r" +"Robot parado"+"\n");
 					break;
 				case 1:
 					r.Reta(-15);
+					textAreaConsola.append("\r" +"Reta com distância: -15" + "\n");
 					break;
 				case 2:
 					r.CurvarEsquerda(0, 90);
+					textAreaConsola.append("\r" +"Curva Direita com raio: 0"+ " e ângulo: 90" + "\n");
 					break;
 				case 3:
 					r.Parar(true);
+					textAreaConsola.append("\r" +"Robot parado"+"\n");
 					break;
 				}
 			}
