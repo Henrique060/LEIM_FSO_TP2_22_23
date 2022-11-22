@@ -1,8 +1,0 @@
-package fso.trab1.comunicacao;
-
-import java.util.Random;
-
-public class Vaguear extends Comunicacao{
-	private Random rnd;
-
-}
