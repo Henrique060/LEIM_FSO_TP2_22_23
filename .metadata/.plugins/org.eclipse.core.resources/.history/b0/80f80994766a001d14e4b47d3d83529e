@@ -6,7 +6,7 @@ import javax.swing.JTextArea;
 
 import robot.RobotLegoEV3;
 
-public class Vaguear extends Administrador {
+public class Vaguear extends Comunicacao {
 	private Random rnd;
 	JTextArea textAreaConsola;
 	private RobotLegoEV3 r;
