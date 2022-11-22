@@ -20,9 +20,7 @@ import javax.swing.JTextField;
 
 import fso.trab1.servidor.Servidor;
 
-import fso.trab1.comunicacao.*;
-
-public class GuiApp implements ActionListener, KeyListener, Runnable{
+public class Guiapp implements ActionListener, KeyListener, Runnable{
 
 	/*
 	 * Os nomes das variáveis foram mudados de maneira a ser mais fácil perceber qual eram.
@@ -44,8 +42,6 @@ public class GuiApp implements ActionListener, KeyListener, Runnable{
 	public JCheckBox chckbxVaguear;
 	public JCheckBox chckbxEvitar;
 	private Servidor serv;
-	
-	private Vaguear vaguear;
 			
 	public Servidor getServidor() {
 		return serv;
@@ -58,7 +54,7 @@ public class GuiApp implements ActionListener, KeyListener, Runnable{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					GuiApp window = new GuiApp();
+					Guiapp window = new Guiapp();
 					window.frmGuiDoServidor.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -70,7 +66,7 @@ public class GuiApp implements ActionListener, KeyListener, Runnable{
 	/**
 	 * Create the application.
 	 */
-	public GuiApp() {
+	public Guiapp() {
 		initialize();
 		frmGuiDoServidor.addKeyListener(this);
 		frmGuiDoServidor.setResizable(false);
@@ -441,15 +437,11 @@ public class GuiApp implements ActionListener, KeyListener, Runnable{
 		chckbxVaguear = new JCheckBox("Vaguear");
 		chckbxVaguear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(chckbxVaguear.isSelected()) {
+				if(chckbxVaguear.isSelected() && !chckbxEvitar.isSelected()) {
 					textAreaConsola.append("\r" + "Vaguear..." + "\n");
-					//serv.createVaguear();
-					vaguear.vaguear();
-					
+				
 				}
-				else {
-					//serv.destroyVaguear();
-				}
+				
 			}
 		});
 		chckbxVaguear.setBounds(337, 146, 93, 21);
@@ -460,24 +452,9 @@ public class GuiApp implements ActionListener, KeyListener, Runnable{
 			public void actionPerformed(ActionEvent e) {
 				if(chckbxEvitar.isSelected() && !chckbxVaguear.isSelected()) {
 					textAreaConsola.append("\r" + "Evitar..." + "\n");
-					//serv.createEvitar();
+					
 				}
-				else if(chckbxVaguear.isSelected() && chckbxEvitar.isSelected()) {
-					textAreaConsola.append("\r" + "Evitar e Vaguear selecionados" + "\n");
-					//serv.destroyVaguear();
-					//serv.createEvitar();
-					//serv.createVaguear();
-				}
-				else if(chckbxVaguear.isSelected() && !chckbxEvitar.isSelected()) {
-					textAreaConsola.append("\r" + "Vaguear..." + "\n");
-					//serv.destroyEvitar();
-					//ge.frmGuiDoEvitar.dispose();
-					//serv.destroyVaguear();
-					//serv.createVaguear();
-				}
-				else {
-					//serv.destroyEvitar();
-				}
+				
 			}
 		});
 		chckbxEvitar.setBounds(337, 166, 93, 21);
@@ -505,10 +482,6 @@ public class GuiApp implements ActionListener, KeyListener, Runnable{
 		
 		textAreaConsola = new JTextArea();
 		scrollPane.setViewportView(textAreaConsola);
-		
-		JCheckBox chckbxNewCheckBox = new JCheckBox("Fugir");
-		chckbxNewCheckBox.setBounds(337, 189, 93, 21);
-		frmGuiDoServidor.getContentPane().add(chckbxNewCheckBox);
 		
 		/*Fica disabled quando se da run a gui até o robot não ligar*/
 		/*
@@ -551,4 +524,5 @@ public class GuiApp implements ActionListener, KeyListener, Runnable{
 		serv = new Servidor();
 		
 	}
+	
 }
