@@ -1,5 +1,7 @@
 package fso.trab1.comunicacao;
 
+import java.awt.EventQueue;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
 import javax.swing.JFrame;
