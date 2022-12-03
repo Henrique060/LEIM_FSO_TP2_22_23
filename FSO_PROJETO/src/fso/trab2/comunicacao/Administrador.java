@@ -460,4 +460,31 @@ public class Administrador implements ActionListener, KeyListener {
 		((Vaguear) thVaguear).play();
 
 	}
+	
+//public boolean ocupado;
+//	
+//	public synchronized void inEvitar() throws InterruptedException {
+//		while(((Evitar) thEvitar).estaEvitar == true) {
+//			thVaguear.wait();
+//			thFugir.wait();
+//		}
+//		this.ocupado = true;
+//	}
+//	
+//	public synchronized void outEvitar() {
+//		this.ocupado = false;
+//		this.notifyAll();
+//	}
+//	
+//	public synchronized void inFugir() throws InterruptedException {
+//		while(((Fugir)thFugir).estaFugir == true) {
+//			thVaguear.wait();
+//		}
+//		this.ocupado = true;
+//	}
+//	
+//	public synchronized void outFugir() {
+//		this.ocupado = false;
+//		this.notifyAll();
+//	}
 }
