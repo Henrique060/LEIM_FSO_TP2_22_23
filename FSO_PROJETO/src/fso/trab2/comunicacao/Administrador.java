@@ -44,18 +44,18 @@ public class Administrador implements ActionListener, KeyListener {
 	public JCheckBox chckbxVaguear;
 	public JCheckBox chckbxEvitar;
 	public JCheckBox chckbxFugir;
-	
-	//thread handling
-	private Thread thVaguear;
-	private boolean vagueando;
-	
-	private Thread thEvitar;
-	private boolean evitando;
-	
-	private Thread thFugir;
-	private boolean fugindo;
 
-	private RobotLegoEV3 r = new RobotLegoEV3();
+	// thread handling
+	private Thread thVaguear;
+	public boolean vagueando;
+
+	private Thread thEvitar;
+	public boolean evitando;
+
+	private Thread thFugir;
+	public boolean fugindo;
+
+	public RobotLegoEV3 r = new RobotLegoEV3();
 
 	public Administrador() {
 		initialize();
@@ -68,11 +68,22 @@ public class Administrador implements ActionListener, KeyListener {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		//idea- enves de estar a trabalhar com esta variável aqui, ir buscar o estado com um getEstado ao comportamento
+		// idea- enves de estar a trabalhar com esta variável aqui, ir buscar o estado
+		// com um getEstado ao comportamento
+
 		vagueando = false;
 		evitando = false;
 		fugindo = false;
-		
+
+		// Launch das threads
+		thVaguear = new Vaguear(this);
+		thVaguear.start();
+
+		thEvitar = new Evitar(this);
+		thEvitar.start();
+
+		thFugir = new Fugir(this);
+		thFugir.start();
 
 		frmGuiDoAdmin = new JFrame();
 		frmGuiDoAdmin.setTitle("GUI do SERVIDOR");
@@ -128,9 +139,10 @@ public class Administrador implements ActionListener, KeyListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				r.OpenEV3(textNome.getText());
 				if (r.OpenEV3(textNome.getText()) == false) {
-					r.OpenEV3(textNome.getText());
-					textAreaConsola.append("\r" + "Robot ON" + "\n");
+
+					textAreaConsola.append("\r" + "Robot  not ON" + "\n");
 				} else {
 					r.Parar(true);
 					try {
@@ -138,7 +150,7 @@ public class Administrador implements ActionListener, KeyListener {
 					} catch (InterruptedException f) {
 						f.printStackTrace();
 					}
-					r.CloseEV3();
+					// r.CloseEV3();
 					textAreaConsola.append("\r" + "Robot OFF" + "\n");
 				}
 			}
@@ -232,7 +244,7 @@ public class Administrador implements ActionListener, KeyListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				textAreaConsola.append("\r" + "Frente..." + "\n");
-				textAreaConsola.append("\r" + "Distancia: "+textDist.getText() + "\n");
+				textAreaConsola.append("\r" + "Distancia: " + textDist.getText() + "\n");
 				r.Reta(Integer.parseInt(textDist.getText()));
 				r.Parar(false);
 
@@ -249,7 +261,8 @@ public class Administrador implements ActionListener, KeyListener {
 				textAreaConsola.append("\r" + "Parar..." + "\n");
 				r.Parar(true);
 				textAreaConsola.append("\r" + "Parado!!!" + "\n");
-			}});
+			}
+		});
 		frmGuiDoAdmin.getContentPane().add(btnParar);
 
 		btnRetaguarda = new JButton("Retaguarda");
@@ -259,10 +272,11 @@ public class Administrador implements ActionListener, KeyListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				textAreaConsola.append("\r" + "Retaguarda..." + "\n");
-				textAreaConsola.append("\r" + "Distancia: "+"-"+textDist.getText() + "\n");
+				textAreaConsola.append("\r" + "Distancia: " + "-" + textDist.getText() + "\n");
 				r.Reta(-Integer.parseInt(textDist.getText()));
 				r.Parar(false);
-			}});
+			}
+		});
 		frmGuiDoAdmin.getContentPane().add(btnRetaguarda);
 
 		btnDireita = new JButton("Direita");
@@ -272,12 +286,13 @@ public class Administrador implements ActionListener, KeyListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				textAreaConsola.append("\r" + "Direita..." + "\n");
-				textAreaConsola.append("\r" + "Raio: "+textRaio.getText() + "\n");
-				textAreaConsola.append("\r" + "Angulo: "+textAng.getText() + "\n");
+				textAreaConsola.append("\r" + "Raio: " + textRaio.getText() + "\n");
+				textAreaConsola.append("\r" + "Angulo: " + textAng.getText() + "\n");
 				r.CurvarDireita(Double.parseDouble(textRaio.getText()), Integer.parseInt(textAng.getText()));
 				r.Parar(false);
-				
-			}});
+
+			}
+		});
 		frmGuiDoAdmin.getContentPane().add(btnDireita);
 
 		btnEsquerda = new JButton("Esquerda");
@@ -287,11 +302,12 @@ public class Administrador implements ActionListener, KeyListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				textAreaConsola.append("\r" + "Esquerda..." + "\n");
-				textAreaConsola.append("\r" + "Raio: "+textRaio.getText() + "\n");
-				textAreaConsola.append("\r" + "Angulo: "+textAng.getText() + "\n");
+				textAreaConsola.append("\r" + "Raio: " + textRaio.getText() + "\n");
+				textAreaConsola.append("\r" + "Angulo: " + textAng.getText() + "\n");
 				r.CurvarEsquerda(Double.parseDouble(textRaio.getText()), Integer.parseInt(textAng.getText()));
 				r.Parar(false);
-			}});
+			}
+		});
 		frmGuiDoAdmin.getContentPane().add(btnEsquerda);
 
 		chckbxDebug = new JCheckBox("Debug");
@@ -304,17 +320,19 @@ public class Administrador implements ActionListener, KeyListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(vagueando) {
+				if (vagueando) {
 					textAreaConsola.append("\r" + "Parou de Vaguear" + "\n");
 					((Vaguear) thVaguear).pause();
+					r.Parar(true);
 					vagueando = false;
-				}else {
+				} else {
 					((Vaguear) thVaguear).play();
 					textAreaConsola.append("\r" + "A Vaguear..." + "\n");
 					vagueando = true;
 				}
-				
-			}});
+
+			}
+		});
 		frmGuiDoAdmin.getContentPane().add(chckbxVaguear);
 
 		chckbxEvitar = new JCheckBox("Evitar");
@@ -323,16 +341,18 @@ public class Administrador implements ActionListener, KeyListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(evitando) {
+				if (evitando) {
 					textAreaConsola.append("\r" + "A parar de Evitar..." + "\n");
 					((Evitar) thEvitar).pause();
+					r.Parar(true);
 					evitando = false;
-				}else {
+				} else {
 					((Evitar) thEvitar).play();
 					textAreaConsola.append("\r" + "A Evitar..." + "\n");
 					evitando = true;
 				}
-			}});
+			}
+		});
 		frmGuiDoAdmin.getContentPane().add(chckbxEvitar);
 
 		chckbxFugir = new JCheckBox("Fugir");
@@ -341,16 +361,18 @@ public class Administrador implements ActionListener, KeyListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(fugindo) {
+				if (fugindo) {
 					textAreaConsola.append("\r" + "A parar de Fugir..." + "\n");
 					((Fugir) thFugir).pause();
+					r.Parar(true);
 					fugindo = false;
-				}else {
+				} else {
 					((Fugir) thFugir).play();
 					textAreaConsola.append("\r" + "A Fugir..." + "\n");
 					fugindo = true;
 				}
-			}});
+			}
+		});
 		frmGuiDoAdmin.getContentPane().add(chckbxFugir);
 
 		JLabel lblNewLabel = new JLabel("Robot");
@@ -379,16 +401,7 @@ public class Administrador implements ActionListener, KeyListener {
 
 		textAreaConsola = new JTextArea();
 		scrollPane.setViewportView(textAreaConsola);
-		
-		//Launch das threads
-		thVaguear = new Vaguear();
-		thVaguear.start();
-		
-		thEvitar = new Evitar();
-		thEvitar.start();
-		
-		thFugir = new Fugir();
-		thFugir.start();
+
 	}
 
 	/**
@@ -428,6 +441,23 @@ public class Administrador implements ActionListener, KeyListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+
+	}
+
+	public void pauseFugir() {
+		((Fugir) thFugir).pause();
+	}
+
+	public void playFugir() {
+		((Fugir) thFugir).play();
+	}
+
+	public void pauseVaguear() {
+		((Vaguear) thVaguear).pause();
+	}
+	
+	public void playVaguear() {
+		((Vaguear) thVaguear).play();
 
 	}
 }

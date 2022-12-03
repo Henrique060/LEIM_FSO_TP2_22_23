@@ -6,13 +6,15 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import fso.trab2.comunicacao.Administrador;
 import robot.RobotLegoEV3;
 
 public class Fugir extends Comportamento {
 	JTextArea textAreaConsola;
-	private Random rnd;
+	private Random rnd = new Random();
 	
-	public Fugir() {
+	public Fugir(Administrador Admin) {
+		super(Admin);
 		this.setName("Fugir");
 		gui_fugir();
 	}
@@ -49,39 +51,71 @@ public class Fugir extends Comportamento {
 
 		
 		
-//		try {
-//			Thread.sleep(250);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//
-//		int rand_int = rnd.nextInt(2);
-//
-//		if (r.SensorUS(RobotLegoEV3.S_2) <= 50) {
+		try {
+			Thread.sleep(250);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		int rand_int = rnd.nextInt(2);
+
+		if (admin.r.SensorUS(RobotLegoEV3.S_2) <= 50) {
+			if(admin.vagueando) {
+				admin.pauseVaguear();
+			}
+			
+			
+			
 //			for (int i = 0; i < 2; i++) {
 //
 //				switch (i) {
 //				case 0:
-//					r.SetVelocidade(80);
+//					admin.r.SetVelocidade(80);
 //					textAreaConsola.append("\r" + "Velocidade aumentada para 80" + "\n");
-//					r.Reta(50);
+//					admin.r.Reta(50);
 //					textAreaConsola.append("\r" + "Reta com distância: 50" + "\n");
 //					break;
 //				case 1:
 //					if (rand_int == 1) {
-//						r.CurvarDireita(0, 90);
+//						admin.r.CurvarDireita(0, 90);
 //						textAreaConsola.append("\r" + "Curva Direita com raio: 0" + " e ângulo: 90" + "\n");
 //					} else {
-//						r.CurvarEsquerda(0, 90);
+//						admin.r.CurvarEsquerda(0, 90);
 //						textAreaConsola.append("\r" + "Curva Esquerda com raio: 0" + " e ângulo: 90" + "\n");
 //					}
-//					r.SetVelocidade(50);
+//					admin.r.SetVelocidade(50);
 //					textAreaConsola.append("\r" + "Velocidade reduzida para 50" + "\n");
 //					break;
 //				}
 //			}
-//		}
+			admin.r.SetVelocidade(70);
+			textAreaConsola.append("\r" + "Velocidade aumentada para 80" + "\n");
+			admin.r.Reta(50);
+			textAreaConsola.append("\r" + "Reta com distância: 50" + "\n");
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if (rand_int == 1 || rand_int == 0) {
+				admin.r.CurvarDireita(0, 90);
+				textAreaConsola.append("\r" + "Curva Direita com raio: 0" + " e ângulo: 90" + "\n");
+			} //else {
+//				admin.r.CurvarEsquerda(0, 90);
+//				textAreaConsola.append("\r" + "Curva Esquerda com raio: 0" + " e ângulo: 90" + "\n");
+//			}
+			admin.r.SetVelocidade(50);
+			admin.r.Reta(1);
+			admin.r.Parar(false);
+			textAreaConsola.append("\r" + "Velocidade reduzida para 50" + "\n");
+			
+			if(admin.vagueando) {
+				admin.playVaguear();
+			}
+		}
 	}
 
 

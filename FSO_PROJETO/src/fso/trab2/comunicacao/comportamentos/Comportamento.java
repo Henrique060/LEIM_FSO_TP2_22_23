@@ -4,15 +4,20 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import fso.trab2.comunicacao.Administrador;
 import robot.RobotLegoEV3;
 
 public abstract class Comportamento extends Thread {
 
-	public RobotLegoEV3 r;
+	public Administrador admin;
 	protected Estado estado = Estado.Paused;
 	protected final Object MONITOR = new Object();
 	
 	//protected JTextArea textAreaConsola;
+	
+	public Comportamento(Administrador Admin) {
+		this.admin=Admin;
+	}
 
 	@Override
 	public void run() {
@@ -24,6 +29,7 @@ public abstract class Comportamento extends Thread {
 
 				break;
 			case Paused:
+				admin.r.Parar(true);
 				synchronized (MONITOR) {
 					try {
 						//textAreaConsola.append("\r" + "waiting" + "\n");
@@ -72,6 +78,7 @@ public abstract class Comportamento extends Thread {
 	}
 
 	public void pause() {
+		//admin.r.Parar(true);
 		this.estado = Estado.Paused;
 	}
 }
