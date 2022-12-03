@@ -48,7 +48,14 @@ public class Evitar extends Comportamento {
 			e.printStackTrace();
 		}
 		
+		if(admin.vagueando) {
+			admin.pauseVaguear();
+		}
+		if(admin.fugindo) {
+			admin.pauseFugir();
+		}
 		if (admin.r.SensorToque(RobotLegoEV3.S_1) == 1) {
+<<<<<<< Updated upstream
 			estaEvitar = true;
 			/*if(admin.vagueando) {
 				admin.pauseVaguear();
@@ -56,6 +63,9 @@ public class Evitar extends Comportamento {
 			if(admin.fugindo) {
 				admin.pauseFugir();
 			}*/
+=======
+			
+>>>>>>> Stashed changes
 //			for (int i = 0; i < 4; i++) {
 //
 //				switch (i) {
@@ -89,6 +99,7 @@ public class Evitar extends Comportamento {
 			admin.r.Parar(false);
 			textAreaConsola.append("\r" + "Robot parado" + "\n");
 			
+<<<<<<< Updated upstream
 			/*if(admin.vagueando) {
 				admin.playVaguear();
 			}
@@ -100,5 +111,19 @@ public class Evitar extends Comportamento {
 			textAreaConsola.append("\r" + "Nao ha toque" + "\n");
 		}
 		estaEvitar = false;
+=======
+			
+		}else {
+			textAreaConsola.append("\r" + "Nao ha toque" + "\n");
+		}
+		
+		if(admin.vagueando) {
+			admin.playVaguear();
+		}
+		
+		if(admin.fugindo) {
+			admin.playFugir();
+		}
+>>>>>>> Stashed changes
 	}
 }

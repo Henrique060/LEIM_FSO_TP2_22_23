@@ -60,12 +60,19 @@ public class Fugir extends Comportamento {
 		}
 
 		int rand_int = rnd.nextInt(2);
-
+		
+		if(admin.vagueando) {
+			admin.pauseVaguear();
+		}
 		if (admin.r.SensorUS(RobotLegoEV3.S_2) <= 50) {
+<<<<<<< Updated upstream
 			estaFugir = true;
 			/*if(admin.vagueando) {
 				admin.pauseVaguear();
 			}*/
+=======
+			
+>>>>>>> Stashed changes
 			
 			
 			
@@ -114,9 +121,16 @@ public class Fugir extends Comportamento {
 			admin.r.Parar(false);
 			textAreaConsola.append("\r" + "Velocidade reduzida para 50" + "\n");
 			
+<<<<<<< Updated upstream
 			/*if(admin.vagueando) {
 				admin.playVaguear();
 			}*/
+=======
+			
+		}
+		if(admin.vagueando) {
+			admin.playVaguear();
+>>>>>>> Stashed changes
 		}
 		estaFugir = false;
 	}
