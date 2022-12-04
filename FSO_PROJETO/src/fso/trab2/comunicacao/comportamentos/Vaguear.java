@@ -57,7 +57,6 @@ public class Vaguear extends Comportamento {
 
 			entrar();
 			switch (escolhida) {
-
 			case 0:
 				admin.r.Reta(rand_int);				
 				textAreaConsola.append("\r" + "Reta com distância: " + rand_int + "\n");
@@ -73,21 +72,22 @@ public class Vaguear extends Comportamento {
 						.append("\r" + "Curva Esquerda com raio: " + rand_raio + " e ângulo: " + rand_angulo + "\n");
 				break;
 			}
+			
 			sair();
+			Thread.sleep(250);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 
 	}
 
-	@Override
-	public synchronized void entrar() throws InterruptedException {
-		while (admin.ocupado && admin.EvitarEspera && admin.FugirEspera) {
-			this.wait();
-		}
-
-		admin.ocupado = true;
-
-	}
+//	@Override
+//	public synchronized void entrar() throws InterruptedException {
+//		while (admin.ocupado || admin.EvitarEspera || admin.FugirEspera) {
+//			this.wait();
+//		}
+//		admin.ocupado = true;
+//
+//	}
 
 }

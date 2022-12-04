@@ -34,10 +34,17 @@ public abstract class Comportamento extends Thread {
 
 				break;
 			case Paused:
-				admin.r.Parar(true);
+				try {
+					entrar();
+					admin.r.Parar(true);
+					sair();
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 				synchronized (MONITOR) {
 					try {
-						//textAreaConsola.append("\r" + "waiting" + "\n");
 						MONITOR.wait();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
@@ -82,7 +89,7 @@ public abstract class Comportamento extends Thread {
 		
 	}
 
-	public void pause() {
+	public void pause() throws InterruptedException {
 		
 		this.estado = Estado.Paused;
 		this.interrupt();
@@ -100,7 +107,6 @@ public abstract class Comportamento extends Thread {
 
 	public synchronized void sair() throws InterruptedException {
 		admin.ocupado = false;
-		
 		notifyAll();
 	}
 }

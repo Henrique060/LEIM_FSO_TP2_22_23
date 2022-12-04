@@ -83,17 +83,17 @@ public class Fugir extends Comportamento {
 		
 	}
 	
-	@Override
-	public synchronized void entrar() throws InterruptedException {
-		while ( admin.ocupado && admin.EvitarEspera ) {
-			admin.FugirEspera = true;
-			this.wait();
-		}
-		
-		admin.ocupado = true;
-		admin.FugirEspera = false;
-		
-	}
+//	@Override
+//	public synchronized void entrar() throws InterruptedException {
+//		while ( admin.ocupado || admin.EvitarEspera ) {
+//			admin.FugirEspera = true;
+//			this.wait();
+//		}
+//		
+//		admin.ocupado = true;
+//		admin.FugirEspera = false;
+//		
+//	}
 
 
 }

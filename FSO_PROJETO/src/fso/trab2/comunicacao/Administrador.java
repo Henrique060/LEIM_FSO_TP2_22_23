@@ -328,7 +328,12 @@ public class Administrador implements ActionListener, KeyListener {
 			public void actionPerformed(ActionEvent e) {
 				if (vagueando) {
 					textAreaConsola.append("\r" + "Parou de Vaguear" + "\n");
-					thVaguear.pause();
+					try {
+						thVaguear.pause();
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					vagueando = false;
 				} else {
 					thVaguear.play();
@@ -348,7 +353,12 @@ public class Administrador implements ActionListener, KeyListener {
 			public void actionPerformed(ActionEvent e) {
 				if (evitando) {
 					textAreaConsola.append("\r" + "A parar de Evitar..." + "\n");
-					thEvitar.pause();
+					try {
+						thEvitar.pause();
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					evitando = false;
 				} else {
 					((Evitar) thEvitar).play();
@@ -367,7 +377,12 @@ public class Administrador implements ActionListener, KeyListener {
 			public void actionPerformed(ActionEvent e) {
 				if (fugindo) {
 					textAreaConsola.append("\r" + "A parar de Fugir..." + "\n");
-					thFugir.pause();
+					try {
+						thFugir.pause();
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					fugindo = false;
 				} else {
 					thFugir.play();
