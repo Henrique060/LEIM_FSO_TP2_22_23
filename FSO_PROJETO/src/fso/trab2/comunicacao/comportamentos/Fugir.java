@@ -61,9 +61,7 @@ public class Fugir extends Comportamento {
 
 		int rand_int = rnd.nextInt(2);
 		
-		if(admin.vagueando) {
-			admin.pauseVaguear();
-		}
+		
 		if (admin.r.SensorUS(RobotLegoEV3.S_2) <= 50) {
 
 			estaFugir = true;
@@ -125,10 +123,7 @@ public class Fugir extends Comportamento {
 
 			
 		}
-		if(admin.vagueando) {
-			admin.playVaguear();
-
-		}
+		
 		estaFugir = false;
 	}
 

@@ -363,11 +363,18 @@ public class Administrador implements ActionListener, KeyListener {
 			public void actionPerformed(ActionEvent e) {
 				if (fugindo) {
 					textAreaConsola.append("\r" + "A parar de Fugir..." + "\n");
-					((Fugir) thFugir).pause();
-					r.Parar(true);
+					//((Fugir) thFugir).pause();
+					//r.Parar(true);
+					try {
+						inFugir(); //testar se funciona
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					fugindo = false;
 				} else {
-					((Fugir) thFugir).play();
+					//((Fugir) thFugir).play();
+					outFugir();
 					textAreaConsola.append("\r" + "A Fugir..." + "\n");
 					fugindo = true;
 				}
@@ -444,47 +451,37 @@ public class Administrador implements ActionListener, KeyListener {
 
 	}
 
-	public void pauseFugir() {
-		((Fugir) thFugir).pause();
-	}
 
-	public void playFugir() {
-		((Fugir) thFugir).play();
-	}
-
-	public void pauseVaguear() {
-		((Vaguear) thVaguear).pause();
+	
+/**
+ * teste ideia synchronized
+ */
+	
+	public boolean ocupado;
+	
+	public synchronized void inEvitar() throws InterruptedException {
+		while(((Evitar) thEvitar).estaEvitar == true) {
+			thVaguear.wait();
+			thFugir.wait();
+		}
+		this.ocupado = true;
 	}
 	
-	public void playVaguear() {
-		((Vaguear) thVaguear).play();
-
+	public synchronized void outEvitar() {
+		this.ocupado = false;
+		this.notifyAll();
 	}
 	
-//public boolean ocupado;
-//	
-//	public synchronized void inEvitar() throws InterruptedException {
-//		while(((Evitar) thEvitar).estaEvitar == true) {
-//			thVaguear.wait();
-//			thFugir.wait();
-//		}
-//		this.ocupado = true;
-//	}
-//	
-//	public synchronized void outEvitar() {
-//		this.ocupado = false;
-//		this.notifyAll();
-//	}
-//	
-//	public synchronized void inFugir() throws InterruptedException {
-//		while(((Fugir)thFugir).estaFugir == true) {
-//			thVaguear.wait();
-//		}
-//		this.ocupado = true;
-//	}
-//	
-//	public synchronized void outFugir() {
-//		this.ocupado = false;
-//		this.notifyAll();
-//	}
+	public synchronized void inFugir() throws InterruptedException {
+	
+		while(((Fugir)thFugir).estaFugir == true) {
+			thVaguear.wait();
+		}
+		this.ocupado = true;
+	}
+	
+	public synchronized void outFugir() {
+		this.ocupado = false;
+		this.notifyAll();
+	}
 }

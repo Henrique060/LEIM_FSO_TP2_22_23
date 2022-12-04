@@ -49,11 +49,9 @@ public class Evitar extends Comportamento {
 		}
 		
 		if(admin.vagueando) {
-			admin.pauseVaguear();
+			pause();
 		}
-		if(admin.fugindo) {
-			admin.pauseFugir();
-		}
+		
 		if (admin.r.SensorToque(RobotLegoEV3.S_1) == 1) {
 
 			estaEvitar = true;
@@ -111,15 +109,6 @@ public class Evitar extends Comportamento {
 		estaEvitar = false;
 
 			
-		
-		
-		if(admin.vagueando) {
-			admin.playVaguear();
-		}
-		
-		if(admin.fugindo) {
-			admin.playFugir();
-		}
 
 	}
 }

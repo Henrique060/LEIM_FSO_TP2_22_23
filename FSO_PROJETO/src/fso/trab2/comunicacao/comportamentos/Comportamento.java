@@ -78,7 +78,9 @@ public abstract class Comportamento extends Thread {
 	}
 
 	public void pause() {
+		
 		//admin.r.Parar(true);
 		this.estado = Estado.Paused;
+		this.interrupt();
 	}
 }
