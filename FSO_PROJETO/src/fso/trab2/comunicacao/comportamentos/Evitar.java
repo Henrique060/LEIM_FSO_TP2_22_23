@@ -1,4 +1,4 @@
-package fso.trab2.comunicacao;
+package fso.trab2.comunicacao.comportamentos;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -6,7 +6,7 @@ import javax.swing.JTextArea;
 
 import robot.RobotLegoEV3;
 
-public class Evitar extends Execute {
+public class Evitar extends Comportamento {
 	JTextArea textAreaConsola;
 
 	public void executar() {

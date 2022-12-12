@@ -17,6 +17,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import fso.trab2.comunicacao.comportamentos.Comportamento;
+import fso.trab2.comunicacao.comportamentos.Vaguear;
 import robot.RobotLegoEV3;
 
 /**
@@ -40,6 +42,10 @@ public class Administrador implements ActionListener, KeyListener {
 	public JCheckBox chckbxVaguear;
 	public JCheckBox chckbxEvitar;
 	public JCheckBox chckbxFugir;
+	
+	//thread handling
+	private Thread thVaguear;
+	private boolean vagueando;
 
 	private RobotLegoEV3 r = new RobotLegoEV3();
 
@@ -54,6 +60,9 @@ public class Administrador implements ActionListener, KeyListener {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		//Para questões de teste é mais fácil começar com o vaguear a funcionar, mas quando é a sério as threads têmq eu se iniciar em pausa
+		vagueando = true;
+		
 
 		frmGuiDoAdmin = new JFrame();
 		frmGuiDoAdmin.setTitle("GUI do SERVIDOR");
@@ -285,7 +294,17 @@ public class Administrador implements ActionListener, KeyListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				textAreaConsola.append("\r" + "Vaguear..." + "\n");
+				if(vagueando) {
+					textAreaConsola.append("\r" + "A parar de Vaguear..." + "\n");
+					((Vaguear) thVaguear).takeABreak();
+					vagueando = false;
+				}else {
+					((Vaguear) thVaguear).goWork();
+					thVaguear.notify();
+					textAreaConsola.append("\r" + "A Vaguear..." + "\n");
+					vagueando = true;
+				}
+				
 			}});
 		frmGuiDoAdmin.getContentPane().add(chckbxVaguear);
 
@@ -335,6 +354,14 @@ public class Administrador implements ActionListener, KeyListener {
 
 		textAreaConsola = new JTextArea();
 		scrollPane.setViewportView(textAreaConsola);
+		
+		//Launch das threads
+		thVaguear = new Vaguear();
+		thVaguear.start();
+		
+		
+		
+		
 	}
 
 	/**

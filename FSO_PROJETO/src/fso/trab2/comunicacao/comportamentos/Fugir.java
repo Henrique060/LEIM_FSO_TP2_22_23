@@ -1,4 +1,4 @@
-package fso.trab2.comunicacao;
+package fso.trab2.comunicacao.comportamentos;
 
 import java.util.Random;
 
@@ -8,7 +8,7 @@ import javax.swing.JTextArea;
 
 import robot.RobotLegoEV3;
 
-public class Fugir extends Execute {
+public class Fugir extends Comportamento {
 	JTextArea textAreaConsola;
 	private Random rnd;
 
