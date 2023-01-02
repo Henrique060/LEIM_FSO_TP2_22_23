@@ -18,6 +18,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import fso.trab2.comunicacao.comportamentos.Comportamento;
+import fso.trab2.comunicacao.comportamentos.Evitar;
+import fso.trab2.comunicacao.comportamentos.Fugir;
 import fso.trab2.comunicacao.comportamentos.Vaguear;
 import robot.RobotLegoEV3;
 
@@ -46,6 +48,12 @@ public class Administrador implements ActionListener, KeyListener {
 	//thread handling
 	private Thread thVaguear;
 	private boolean vagueando;
+	
+	private Thread thEvitar;
+	private boolean evitando;
+	
+	private Thread thFugir;
+	private boolean fugindo;
 
 	private RobotLegoEV3 r = new RobotLegoEV3();
 
@@ -60,8 +68,10 @@ public class Administrador implements ActionListener, KeyListener {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		//Para questões de teste é mais fácil começar com o vaguear a funcionar, mas quando é a sério as threads têmq eu se iniciar em pausa
-		vagueando = true;
+		//idea- enves de estar a trabalhar com esta variável aqui, ir buscar o estado com um getEstado ao comportamento
+		vagueando = false;
+		evitando = false;
+		fugindo = false;
 		
 
 		frmGuiDoAdmin = new JFrame();
@@ -295,12 +305,11 @@ public class Administrador implements ActionListener, KeyListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(vagueando) {
-					textAreaConsola.append("\r" + "A parar de Vaguear..." + "\n");
-					((Vaguear) thVaguear).takeABreak();
+					textAreaConsola.append("\r" + "Parou de Vaguear" + "\n");
+					((Vaguear) thVaguear).pause();
 					vagueando = false;
 				}else {
-					((Vaguear) thVaguear).goWork();
-					thVaguear.notify();
+					((Vaguear) thVaguear).play();
 					textAreaConsola.append("\r" + "A Vaguear..." + "\n");
 					vagueando = true;
 				}
@@ -314,7 +323,15 @@ public class Administrador implements ActionListener, KeyListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				textAreaConsola.append("\r" + "Evitar..." + "\n");
+				if(evitando) {
+					textAreaConsola.append("\r" + "A parar de Evitar..." + "\n");
+					((Evitar) thEvitar).pause();
+					evitando = false;
+				}else {
+					((Evitar) thEvitar).play();
+					textAreaConsola.append("\r" + "A Evitar..." + "\n");
+					evitando = true;
+				}
 			}});
 		frmGuiDoAdmin.getContentPane().add(chckbxEvitar);
 
@@ -324,7 +341,15 @@ public class Administrador implements ActionListener, KeyListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				textAreaConsola.append("\r" + "Fugir..." + "\n");
+				if(fugindo) {
+					textAreaConsola.append("\r" + "A parar de Fugir..." + "\n");
+					((Fugir) thFugir).pause();
+					fugindo = false;
+				}else {
+					((Fugir) thFugir).play();
+					textAreaConsola.append("\r" + "A Fugir..." + "\n");
+					fugindo = true;
+				}
 			}});
 		frmGuiDoAdmin.getContentPane().add(chckbxFugir);
 
@@ -359,9 +384,11 @@ public class Administrador implements ActionListener, KeyListener {
 		thVaguear = new Vaguear();
 		thVaguear.start();
 		
+		thEvitar = new Evitar();
+		thEvitar.start();
 		
-		
-		
+		thFugir = new Fugir();
+		thFugir.start();
 	}
 
 	/**
