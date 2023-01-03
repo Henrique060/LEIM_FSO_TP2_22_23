@@ -12,6 +12,7 @@ import robot.RobotLegoEV3;
 public class Fugir extends Comportamento {
 	JTextArea textAreaConsola;
 	private Random rnd = new Random();
+	public boolean estaFugir;
 	
 	public Fugir(Administrador Admin) {
 		super(Admin);
@@ -61,9 +62,10 @@ public class Fugir extends Comportamento {
 		int rand_int = rnd.nextInt(2);
 
 		if (admin.r.SensorUS(RobotLegoEV3.S_2) <= 50) {
-			if(admin.vagueando) {
+			estaFugir = true;
+			/*if(admin.vagueando) {
 				admin.pauseVaguear();
-			}
+			}*/
 			
 			
 			
@@ -112,10 +114,11 @@ public class Fugir extends Comportamento {
 			admin.r.Parar(false);
 			textAreaConsola.append("\r" + "Velocidade reduzida para 50" + "\n");
 			
-			if(admin.vagueando) {
+			/*if(admin.vagueando) {
 				admin.playVaguear();
-			}
+			}*/
 		}
+		estaFugir = false;
 	}
 
 

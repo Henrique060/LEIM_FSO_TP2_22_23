@@ -10,6 +10,7 @@ import robot.RobotLegoEV3;
 
 public class Evitar extends Comportamento {
 	JTextArea textAreaConsola;
+	public boolean estaEvitar;
 	
 	public Evitar(Administrador Admin) {
 		super(Admin);
@@ -48,12 +49,13 @@ public class Evitar extends Comportamento {
 		}
 		
 		if (admin.r.SensorToque(RobotLegoEV3.S_1) == 1) {
-			if(admin.vagueando) {
+			estaEvitar = true;
+			/*if(admin.vagueando) {
 				admin.pauseVaguear();
 			}
 			if(admin.fugindo) {
 				admin.pauseFugir();
-			}
+			}*/
 //			for (int i = 0; i < 4; i++) {
 //
 //				switch (i) {
@@ -87,15 +89,16 @@ public class Evitar extends Comportamento {
 			admin.r.Parar(false);
 			textAreaConsola.append("\r" + "Robot parado" + "\n");
 			
-			if(admin.vagueando) {
+			/*if(admin.vagueando) {
 				admin.playVaguear();
 			}
 			
 			if(admin.fugindo) {
 				admin.playFugir();
-			}
+			}*/
 		}else {
 			textAreaConsola.append("\r" + "Nao ha toque" + "\n");
 		}
+		estaEvitar = false;
 	}
 }
