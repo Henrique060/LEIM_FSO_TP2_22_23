@@ -12,7 +12,7 @@ import robot.RobotLegoEV3;
 public class Fugir extends Comportamento {
 	JTextArea textAreaConsola;
 	private Random rnd = new Random();
-	public boolean estaFugir;
+	//public boolean estaFugir;
 	
 	public Fugir(Administrador Admin) {
 		super(Admin);
@@ -41,17 +41,7 @@ public class Fugir extends Comportamento {
 
 	}
 	
-	public void work() {
-		textAreaConsola.append("\r" + "a fugir" + "\n");
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		
-		
+	public void work() throws InterruptedException {
 		try {
 			Thread.sleep(250);
 		} catch (InterruptedException e) {
@@ -61,39 +51,9 @@ public class Fugir extends Comportamento {
 
 		int rand_int = rnd.nextInt(2);
 		
-		
+		entrar();
 		if (admin.r.SensorUS(RobotLegoEV3.S_2) <= 50) {
-
-			estaFugir = true;
-			/*if(admin.vagueando) {
-				admin.pauseVaguear();
-			}*/
-
 			
-			
-			
-//			for (int i = 0; i < 2; i++) {
-//
-//				switch (i) {
-//				case 0:
-//					admin.r.SetVelocidade(80);
-//					textAreaConsola.append("\r" + "Velocidade aumentada para 80" + "\n");
-//					admin.r.Reta(50);
-//					textAreaConsola.append("\r" + "Reta com distância: 50" + "\n");
-//					break;
-//				case 1:
-//					if (rand_int == 1) {
-//						admin.r.CurvarDireita(0, 90);
-//						textAreaConsola.append("\r" + "Curva Direita com raio: 0" + " e ângulo: 90" + "\n");
-//					} else {
-//						admin.r.CurvarEsquerda(0, 90);
-//						textAreaConsola.append("\r" + "Curva Esquerda com raio: 0" + " e ângulo: 90" + "\n");
-//					}
-//					admin.r.SetVelocidade(50);
-//					textAreaConsola.append("\r" + "Velocidade reduzida para 50" + "\n");
-//					break;
-//				}
-//			}
 			admin.r.SetVelocidade(70);
 			textAreaConsola.append("\r" + "Velocidade aumentada para 80" + "\n");
 			admin.r.Reta(50);
@@ -117,14 +77,22 @@ public class Fugir extends Comportamento {
 			admin.r.Parar(false);
 			textAreaConsola.append("\r" + "Velocidade reduzida para 50" + "\n");
 
-			/*if(admin.vagueando) {
-				admin.playVaguear();
-			}*/
-
 			
 		}
+		sair();
 		
-		estaFugir = false;
+	}
+	
+	@Override
+	public synchronized void entrar() throws InterruptedException {
+		while ( admin.ocupado && admin.EvitarEspera ) {
+			admin.FugirEspera = true;
+			this.wait();
+		}
+		
+		admin.ocupado = true;
+		admin.FugirEspera = false;
+		
 	}
 
 

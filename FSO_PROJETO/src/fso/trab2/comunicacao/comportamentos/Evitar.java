@@ -10,7 +10,7 @@ import robot.RobotLegoEV3;
 
 public class Evitar extends Comportamento {
 	JTextArea textAreaConsola;
-	public boolean estaEvitar;
+	//public boolean estaEvitar;
 	
 	public Evitar(Administrador Admin) {
 		super(Admin);
@@ -39,7 +39,7 @@ public class Evitar extends Comportamento {
 
 	}
 	
-	public void work() {
+	public void work() throws InterruptedException {
 		
 		try {
 			Thread.sleep(250);
@@ -48,42 +48,14 @@ public class Evitar extends Comportamento {
 			e.printStackTrace();
 		}
 		
-		if(admin.vagueando) {
-			pause();
-		}
 		
+		entrar();
 		if (admin.r.SensorToque(RobotLegoEV3.S_1) == 1) {
 
-			estaEvitar = true;
-			/*if(admin.vagueando) {
-				admin.pauseVaguear();
-			}
-			if(admin.fugindo) {
-				admin.pauseFugir();
-			}*/
-
-//			for (int i = 0; i < 4; i++) {
-//
-//				switch (i) {
-//				case 0:
-//					admin.r.Parar(true);
-//					textAreaConsola.append("\r" + "Robot parado" + "\n");
-//					break;
-//				case 1:
-//					admin.r.Reta(-15);
-//					textAreaConsola.append("\r" + "Reta com distância: -15" + "\n");
-//					break;
-//				case 2:
-//					admin.r.CurvarEsquerda(0, 90);
-//					textAreaConsola.append("\r" + "Curva Direita com raio: 0" + " e ângulo: 90" + "\n");
-//					break;
-//				case 3:
-//					admin.r.Parar(true);
-//					textAreaConsola.append("\r" + "Robot parado" + "\n");
-//					break;
-//				}
-//			}
+			//estaEvitar = true;
+			
 			admin.r.Parar(true);
+			
 			textAreaConsola.append("\r" + "Robot parado" + "\n");
 			
 			admin.r.Reta(-15);
@@ -95,20 +67,28 @@ public class Evitar extends Comportamento {
 			admin.r.Parar(false);
 			textAreaConsola.append("\r" + "Robot parado" + "\n");
 			
-
-			/*if(admin.vagueando) {
-				admin.playVaguear();
-			}
 			
-			if(admin.fugindo) {
-				admin.playFugir();
-			}*/
+			
 		}else {
 			textAreaConsola.append("\r" + "Nao ha toque" + "\n");
 		}
-		estaEvitar = false;
+		sair();
+		//estaEvitar = false;
 
 			
 
 	}
+	
+	@Override
+	public synchronized void entrar() throws InterruptedException {
+		while ( admin.ocupado) {
+			admin.EvitarEspera = true;
+			this.wait();
+		}
+		
+		admin.ocupado = true;
+		admin.EvitarEspera = false;
+		
+	}
+	
 }

@@ -25,7 +25,12 @@ public abstract class Comportamento extends Thread {
 			
 			switch (estado) {
 			case Working:
-				this.work();
+				try {
+					this.work();
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 
 				break;
 			case Paused:
@@ -64,7 +69,7 @@ public abstract class Comportamento extends Thread {
 //		frmGui.setVisible(true);
 //	}
 	
-	public void work() {
+	public void work() throws InterruptedException {
 		//implementar no comportamento especifico
 	}
 	
@@ -79,8 +84,23 @@ public abstract class Comportamento extends Thread {
 
 	public void pause() {
 		
-		//admin.r.Parar(true);
 		this.estado = Estado.Paused;
 		this.interrupt();
+	}
+	
+	
+	public synchronized void entrar() throws InterruptedException {
+		while ( admin.ocupado ) {
+			this.wait();
+		}
+		
+		admin.ocupado = true;
+		
+	}
+
+	public synchronized void sair() throws InterruptedException {
+		admin.ocupado = false;
+		
+		notifyAll();
 	}
 }

@@ -46,14 +46,20 @@ public class Administrador implements ActionListener, KeyListener {
 	public JCheckBox chckbxFugir;
 
 	// thread handling
-	private Thread thVaguear;
+	private Comportamento thVaguear;
 	public boolean vagueando;
 
-	private Thread thEvitar;
+	private Comportamento thEvitar;
 	public boolean evitando;
 
-	private Thread thFugir;
+	private Comportamento thFugir;
 	public boolean fugindo;
+	
+
+	public boolean ocupado = false;
+	public boolean EvitarEspera = false;
+	public boolean FugirEspera = false;
+	
 
 	public RobotLegoEV3 r = new RobotLegoEV3();
 
@@ -322,11 +328,10 @@ public class Administrador implements ActionListener, KeyListener {
 			public void actionPerformed(ActionEvent e) {
 				if (vagueando) {
 					textAreaConsola.append("\r" + "Parou de Vaguear" + "\n");
-					((Vaguear) thVaguear).pause();
-					r.Parar(true);
+					thVaguear.pause();
 					vagueando = false;
 				} else {
-					((Vaguear) thVaguear).play();
+					thVaguear.play();
 					textAreaConsola.append("\r" + "A Vaguear..." + "\n");
 					vagueando = true;
 				}
@@ -343,8 +348,7 @@ public class Administrador implements ActionListener, KeyListener {
 			public void actionPerformed(ActionEvent e) {
 				if (evitando) {
 					textAreaConsola.append("\r" + "A parar de Evitar..." + "\n");
-					((Evitar) thEvitar).pause();
-					r.Parar(true);
+					thEvitar.pause();
 					evitando = false;
 				} else {
 					((Evitar) thEvitar).play();
@@ -363,18 +367,10 @@ public class Administrador implements ActionListener, KeyListener {
 			public void actionPerformed(ActionEvent e) {
 				if (fugindo) {
 					textAreaConsola.append("\r" + "A parar de Fugir..." + "\n");
-					//((Fugir) thFugir).pause();
-					//r.Parar(true);
-					try {
-						inFugir(); //testar se funciona
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					thFugir.pause();
 					fugindo = false;
 				} else {
-					//((Fugir) thFugir).play();
-					outFugir();
+					thFugir.play();
 					textAreaConsola.append("\r" + "A Fugir..." + "\n");
 					fugindo = true;
 				}
@@ -452,36 +448,4 @@ public class Administrador implements ActionListener, KeyListener {
 	}
 
 
-	
-/**
- * teste ideia synchronized
- */
-	
-	public boolean ocupado;
-	
-	public synchronized void inEvitar() throws InterruptedException {
-		while(((Evitar) thEvitar).estaEvitar == true) {
-			thVaguear.wait();
-			thFugir.wait();
-		}
-		this.ocupado = true;
-	}
-	
-	public synchronized void outEvitar() {
-		this.ocupado = false;
-		this.notifyAll();
-	}
-	
-	public synchronized void inFugir() throws InterruptedException {
-	
-		while(((Fugir)thFugir).estaFugir == true) {
-			thVaguear.wait();
-		}
-		this.ocupado = true;
-	}
-	
-	public synchronized void outFugir() {
-		this.ocupado = false;
-		this.notifyAll();
-	}
 }

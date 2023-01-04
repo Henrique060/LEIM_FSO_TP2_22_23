@@ -14,16 +14,15 @@ import fso.trab2.comunicacao.Administrador;
 public class Vaguear extends Comportamento {
 	JTextArea textAreaConsola;
 	private Random rnd;
-	
 
 	public Vaguear(Administrador Admin) {
 		super(Admin);
 		this.setName("Vaguear");
 		this.rnd = new Random();
-		
+
 		gui_vaguear();
 	}
-	
+
 	public void gui_vaguear() {
 
 		JFrame frmGui = new JFrame();
@@ -45,30 +44,22 @@ public class Vaguear extends Comportamento {
 	}
 
 	public void work() {
-		
-		textAreaConsola.append("\r" + "a vaguear" + "\n");
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+
 		try {
 			// criar os random ints dentro do for para que
 			// cada iteração tenha o seu numero proprio
 			int rand_int = rnd.nextInt(50);
 			int rand_angulo = rnd.nextInt(360);
 			int rand_raio = rnd.nextInt(50);
-			
 
 			// random para decidir qual a usar
 			int escolhida = rnd.nextInt(3);
 
+			entrar();
 			switch (escolhida) {
 
 			case 0:
-				admin.r.Reta(rand_int);
+				admin.r.Reta(rand_int);				
 				textAreaConsola.append("\r" + "Reta com distância: " + rand_int + "\n");
 				break;
 			case 1:
@@ -82,13 +73,21 @@ public class Vaguear extends Comportamento {
 						.append("\r" + "Curva Esquerda com raio: " + rand_raio + " e ângulo: " + rand_angulo + "\n");
 				break;
 			}
+			sair();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		
-		
+
 	}
 
-	
+	@Override
+	public synchronized void entrar() throws InterruptedException {
+		while (admin.ocupado && admin.EvitarEspera && admin.FugirEspera) {
+			this.wait();
+		}
+
+		admin.ocupado = true;
+
+	}
 
 }
