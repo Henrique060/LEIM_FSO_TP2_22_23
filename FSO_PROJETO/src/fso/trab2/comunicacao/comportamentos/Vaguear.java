@@ -7,6 +7,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import fso.trab2.comunicacao.Administrador;
+import fso.trab2.comunicacao.Monitor;
 
 //acho que não é necessario se estiver inicializado no super
 //import robot.RobotLegoEV3;
@@ -15,8 +16,8 @@ public class Vaguear extends Comportamento {
 	JTextArea textAreaConsola;
 	private Random rnd;
 
-	public Vaguear(Administrador Admin) {
-		super(Admin);
+	public Vaguear(Administrador Admin, Monitor mon) {
+		super(Admin, mon);
 		this.setName("Vaguear");
 		this.rnd = new Random();
 
@@ -42,6 +43,8 @@ public class Vaguear extends Comportamento {
 		frmGui.setVisible(true);
 
 	}
+	
+	
 
 	public void work() {
 
@@ -55,25 +58,29 @@ public class Vaguear extends Comportamento {
 			// random para decidir qual a usar
 			int escolhida = rnd.nextInt(3);
 
-			entrar();
-			switch (escolhida) {
-			case 0:
-				admin.r.Reta(rand_int);				
-				textAreaConsola.append("\r" + "Reta com distância: " + rand_int + "\n");
-				break;
-			case 1:
-				admin.r.CurvarDireita(rand_raio, rand_angulo);
-				textAreaConsola
-						.append("\r" + "Curva Direita com raio: " + rand_raio + " e ângulo: " + rand_angulo + "\n");
-				break;
-			case 2:
-				admin.r.CurvarEsquerda(rand_raio, rand_angulo);
-				textAreaConsola
-						.append("\r" + "Curva Esquerda com raio: " + rand_raio + " e ângulo: " + rand_angulo + "\n");
-				break;
+			synchronized(MONITOR) {
+				MONITOR.entrarVaguear();
+				switch (escolhida) {
+				case 0:
+					admin.r.Reta(rand_int);				
+					textAreaConsola.append("\r" + "Reta com distância: " + rand_int + "\n");
+					break;
+				case 1:
+					admin.r.CurvarDireita(rand_raio, rand_angulo);
+					textAreaConsola
+							.append("\r" + "Curva Direita com raio: " + rand_raio + " e ângulo: " + rand_angulo + "\n");
+					break;
+				case 2:
+					admin.r.CurvarEsquerda(rand_raio, rand_angulo);
+					textAreaConsola
+							.append("\r" + "Curva Esquerda com raio: " + rand_raio + " e ângulo: " + rand_angulo + "\n");
+					break;
+				}
+				
+				MONITOR.sair();
 			}
 			
-			sair();
+			
 			Thread.sleep(250);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -81,13 +88,5 @@ public class Vaguear extends Comportamento {
 
 	}
 
-//	@Override
-//	public synchronized void entrar() throws InterruptedException {
-//		while (admin.ocupado || admin.EvitarEspera || admin.FugirEspera) {
-//			this.wait();
-//		}
-//		admin.ocupado = true;
-//
-//	}
 
 }

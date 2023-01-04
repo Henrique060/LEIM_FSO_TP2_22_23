@@ -55,6 +55,8 @@ public class Administrador implements ActionListener, KeyListener {
 	private Comportamento thFugir;
 	public boolean fugindo;
 	
+	public Monitor moni;
+	
 
 	public boolean ocupado = false;
 	public boolean EvitarEspera = false;
@@ -80,16 +82,18 @@ public class Administrador implements ActionListener, KeyListener {
 		vagueando = false;
 		evitando = false;
 		fugindo = false;
+		
+		moni = new Monitor(this);
 
 		// Launch das threads
-		thVaguear = new Vaguear(this);
-		thVaguear.start();
+		thVaguear = new Vaguear(this, moni);
+		
 
-		thEvitar = new Evitar(this);
-		thEvitar.start();
+		thEvitar = new Evitar(this, moni);
 
-		thFugir = new Fugir(this);
-		thFugir.start();
+		thFugir = new Fugir(this, moni);
+		
+		
 
 		frmGuiDoAdmin = new JFrame();
 		frmGuiDoAdmin.setTitle("GUI do SERVIDOR");
@@ -159,6 +163,12 @@ public class Administrador implements ActionListener, KeyListener {
 					// r.CloseEV3();
 					textAreaConsola.append("\r" + "Robot OFF" + "\n");
 				}
+				
+				
+				thVaguear.start();
+				thEvitar.start();
+				thFugir.start();
+				
 			}
 
 		});

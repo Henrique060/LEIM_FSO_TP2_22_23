@@ -5,55 +5,59 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import fso.trab2.comunicacao.Administrador;
+import fso.trab2.comunicacao.Monitor;
 import robot.RobotLegoEV3;
 
 public abstract class Comportamento extends Thread {
 
 	public Administrador admin;
 	protected Estado estado = Estado.Paused;
-	protected final Object MONITOR = new Object();
+	protected Monitor MONITOR;
 	
 	//protected JTextArea textAreaConsola;
 	
-	public Comportamento(Administrador Admin) {
+	public Comportamento(Administrador Admin, Monitor mon) {
 		this.admin=Admin;
+		this.MONITOR = mon;
 	}
 
 	@Override
 	public void run() {
-		for (;;) {
-			
-			switch (estado) {
-			case Working:
-				try {
-					this.work();
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
-				break;
-			case Paused:
-				try {
-					entrar();
-					admin.r.Parar(true);
-					sair();
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+			for (;;) {
 				
-				synchronized (MONITOR) {
+				switch (estado) {
+				case Working:
 					try {
-						MONITOR.wait();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+						this.work();
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
-				}
-				break;
-			}
 
-		}
+					break;
+				case Paused:
+					try {
+						MONITOR.entrar();
+						admin.r.Parar(true);
+						MONITOR.sair();
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+					
+					synchronized (MONITOR) {
+						try {
+							MONITOR.wait();
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+					break;
+				}
+
+			}
+		
 	}
 	
 	// TODO - como as UIs são todas iguais devia dar para serem parte do super, mas dá erro
@@ -86,27 +90,15 @@ public abstract class Comportamento extends Thread {
 			estado = Estado.Working;
 			MONITOR.notify();
 		}
-		
+		 
 	}
 
 	public void pause() throws InterruptedException {
-		
-		this.estado = Estado.Paused;
-		this.interrupt();
-	}
-	
-	
-	public synchronized void entrar() throws InterruptedException {
-		while ( admin.ocupado ) {
-			this.wait();
+		synchronized (MONITOR) {
+			this.estado = Estado.Paused;
+			this.interrupt();
 		}
 		
-		admin.ocupado = true;
-		
 	}
-
-	public synchronized void sair() throws InterruptedException {
-		admin.ocupado = false;
-		notifyAll();
-	}
+	
 }

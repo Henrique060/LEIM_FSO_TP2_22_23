@@ -6,13 +6,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import fso.trab2.comunicacao.Administrador;
+import fso.trab2.comunicacao.Monitor;
 import robot.RobotLegoEV3;
 
 public class Evitar extends Comportamento {
 	JTextArea textAreaConsola;
 	
-	public Evitar(Administrador Admin) {
-		super(Admin);
+	public Evitar(Administrador Admin, Monitor mon) {
+		super(Admin, mon);
 		this.setName("Evitar");
 		gui_evitar();
 	}
@@ -38,6 +39,8 @@ public class Evitar extends Comportamento {
 
 	}
 	
+	
+	
 	public void work() throws InterruptedException {
 		textAreaConsola.append("\r" + "A evitar..." + "\n");
 		try {
@@ -47,44 +50,35 @@ public class Evitar extends Comportamento {
 			e.printStackTrace();
 		}
 		
-		
-		entrar();
-		if (admin.r.SensorToque(RobotLegoEV3.S_1) == 1) {
-			
-			admin.r.Parar(true);
-			
-			textAreaConsola.append("\r" + "Robot parado" + "\n");
-			
-			admin.r.Reta(-15);
-			textAreaConsola.append("\r" + "Reta com distância: -15" + "\n");
-			
-			admin.r.CurvarEsquerda(0, 90);
-			textAreaConsola.append("\r" + "Curva Direita com raio: 0" + " e ângulo: 90" + "\n");
-			
-			admin.r.Parar(false);
-			textAreaConsola.append("\r" + "Robot parado" + "\n");
-			
-			
-			
-		}else {
-			textAreaConsola.append("\r" + "Nao ha toque" + "\n");
+		synchronized(MONITOR) {
+			MONITOR.entrarEvitar();
+			if (admin.r.SensorToque(RobotLegoEV3.S_1) == 1) {
+				
+				admin.r.Parar(true);
+				textAreaConsola.append("\r" + "Robot parado" + "\n");
+				
+				admin.r.Reta(-15);
+				textAreaConsola.append("\r" + "Reta com distância: -15" + "\n");
+				
+				admin.r.CurvarEsquerda(0, 90);
+				textAreaConsola.append("\r" + "Curva Direita com raio: 0" + " e ângulo: 90" + "\n");
+				
+				admin.r.Parar(false);
+				textAreaConsola.append("\r" + "Robot parado" + "\n");
+				
+				
+				
+			}else {
+				textAreaConsola.append("\r" + "Nao ha toque" + "\n");
+			}
+			MONITOR.sair();
 		}
-		sair();
+		
 
 			
 
 	}
 	
-//	@Override
-//	public synchronized void entrar() throws InterruptedException {
-//		while (admin.ocupado) {
-//			admin.EvitarEspera = true;
-//			this.wait();
-//		}
-//		
-//		admin.ocupado = true;
-//		admin.EvitarEspera = false;
-//		
-//	}
+	
 	
 }

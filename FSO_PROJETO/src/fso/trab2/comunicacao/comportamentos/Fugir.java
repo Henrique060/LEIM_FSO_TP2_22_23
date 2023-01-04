@@ -7,6 +7,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import fso.trab2.comunicacao.Administrador;
+import fso.trab2.comunicacao.Monitor;
 import robot.RobotLegoEV3;
 
 public class Fugir extends Comportamento {
@@ -14,8 +15,8 @@ public class Fugir extends Comportamento {
 	private Random rnd = new Random();
 	//public boolean estaFugir;
 	
-	public Fugir(Administrador Admin) {
-		super(Admin);
+	public Fugir(Administrador Admin, Monitor mon) {
+		super(Admin, mon);
 		this.setName("Fugir");
 		gui_fugir();
 	}
@@ -41,6 +42,8 @@ public class Fugir extends Comportamento {
 
 	}
 	
+	
+	
 	public void work() throws InterruptedException {
 		try {
 			Thread.sleep(250);
@@ -51,49 +54,41 @@ public class Fugir extends Comportamento {
 
 		int rand_int = rnd.nextInt(2);
 		
-		entrar();
-		if (admin.r.SensorUS(RobotLegoEV3.S_2) <= 50) {
-			
-			admin.r.SetVelocidade(70);
-			textAreaConsola.append("\r" + "Velocidade aumentada para 80" + "\n");
-			admin.r.Reta(50);
-			textAreaConsola.append("\r" + "Reta com distância: 50" + "\n");
-			try {
-				Thread.sleep(50);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			if (rand_int == 1 || rand_int == 0) {
-				admin.r.CurvarDireita(0, 90);
-				textAreaConsola.append("\r" + "Curva Direita com raio: 0" + " e ângulo: 90" + "\n");
-			} //else {
-//				admin.r.CurvarEsquerda(0, 90);
-//				textAreaConsola.append("\r" + "Curva Esquerda com raio: 0" + " e ângulo: 90" + "\n");
-//			}
-			admin.r.SetVelocidade(50);
-			admin.r.Reta(1);
-			admin.r.Parar(false);
-			textAreaConsola.append("\r" + "Velocidade reduzida para 50" + "\n");
+		synchronized(MONITOR) {
+			MONITOR.entrarFugir();
+			if (admin.r.SensorUS(RobotLegoEV3.S_2) <= 50) {
+				
+				admin.r.SetVelocidade(70);
+				textAreaConsola.append("\r" + "Velocidade aumentada para 80" + "\n");
+				admin.r.Reta(50);
+				textAreaConsola.append("\r" + "Reta com distância: 50" + "\n");
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				if (rand_int == 1 || rand_int == 0) {
+					admin.r.CurvarDireita(0, 90);
+					textAreaConsola.append("\r" + "Curva Direita com raio: 0" + " e ângulo: 90" + "\n");
+				} //else {
+//					admin.r.CurvarEsquerda(0, 90);
+//					textAreaConsola.append("\r" + "Curva Esquerda com raio: 0" + " e ângulo: 90" + "\n");
+//				}
+				admin.r.SetVelocidade(50);
+				admin.r.Reta(1);
+				admin.r.Parar(false);
+				textAreaConsola.append("\r" + "Velocidade reduzida para 50" + "\n");
 
-			
+				
+			}
+			MONITOR.sair();
 		}
-		sair();
+		
+		
 		
 	}
-	
-//	@Override
-//	public synchronized void entrar() throws InterruptedException {
-//		while ( admin.ocupado || admin.EvitarEspera ) {
-//			admin.FugirEspera = true;
-//			this.wait();
-//		}
-//		
-//		admin.ocupado = true;
-//		admin.FugirEspera = false;
-//		
-//	}
 
 
 }
