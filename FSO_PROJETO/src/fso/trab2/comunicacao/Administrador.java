@@ -55,7 +55,8 @@ public class Administrador implements ActionListener, KeyListener {
 	private Comportamento thFugir;
 	public boolean fugindo;
 	
-	public Monitor moni;
+	public Object moniPlayPause;
+	public Monitor moniRobot;
 	
 
 	public boolean ocupado = false;
@@ -76,22 +77,21 @@ public class Administrador implements ActionListener, KeyListener {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		// idea- enves de estar a trabalhar com esta variável aqui, ir buscar o estado
-		// com um getEstado ao comportamento
 
 		vagueando = false;
 		evitando = false;
 		fugindo = false;
 		
-		moni = new Monitor(this);
+		moniPlayPause = new Object();
+		moniRobot = new Monitor(this);
 
 		// Launch das threads
-		thVaguear = new Vaguear(this, moni);
+		thVaguear = new Vaguear(this, moniPlayPause, moniRobot);
 		
 
-		thEvitar = new Evitar(this, moni);
+		thEvitar = new Evitar(this, moniPlayPause, moniRobot);
 
-		thFugir = new Fugir(this, moni);
+		thFugir = new Fugir(this, moniPlayPause, moniRobot);
 		
 		
 

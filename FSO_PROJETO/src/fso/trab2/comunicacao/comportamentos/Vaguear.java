@@ -16,12 +16,13 @@ public class Vaguear extends Comportamento {
 	JTextArea textAreaConsola;
 	private Random rnd;
 
-	public Vaguear(Administrador Admin, Monitor mon) {
-		super(Admin, mon);
+	public Vaguear(Administrador Admin, Object monP, Monitor monR) {
+		super(Admin, monP, monR);
 		this.setName("Vaguear");
 		this.rnd = new Random();
 
 		gui_vaguear();
+		textAreaConsola.append("\r" + "Vaguear inicializado " + "\n");
 	}
 
 	public void gui_vaguear() {
@@ -43,8 +44,6 @@ public class Vaguear extends Comportamento {
 		frmGui.setVisible(true);
 
 	}
-	
-	
 
 	public void work() {
 
@@ -58,35 +57,33 @@ public class Vaguear extends Comportamento {
 			// random para decidir qual a usar
 			int escolhida = rnd.nextInt(3);
 
-			synchronized(MONITOR) {
-				MONITOR.entrarVaguear();
-				switch (escolhida) {
-				case 0:
-					admin.r.Reta(rand_int);				
-					textAreaConsola.append("\r" + "Reta com distância: " + rand_int + "\n");
-					break;
-				case 1:
-					admin.r.CurvarDireita(rand_raio, rand_angulo);
-					textAreaConsola
-							.append("\r" + "Curva Direita com raio: " + rand_raio + " e ângulo: " + rand_angulo + "\n");
-					break;
-				case 2:
-					admin.r.CurvarEsquerda(rand_raio, rand_angulo);
-					textAreaConsola
-							.append("\r" + "Curva Esquerda com raio: " + rand_raio + " e ângulo: " + rand_angulo + "\n");
-					break;
-				}
-				
-				MONITOR.sair();
+			// synchronized(MONITORrobot) {
+			// MONITORrobot.entrarVaguear();
+			switch (escolhida) {
+			case 0:
+				admin.r.Reta(rand_int);
+				textAreaConsola.append("\r" + "Reta com distância: " + rand_int + "\n");
+				break;
+			case 1:
+				admin.r.CurvarDireita(rand_raio, rand_angulo);
+				textAreaConsola
+						.append("\r" + "Curva Direita com raio: " + rand_raio + " e ângulo: " + rand_angulo + "\n");
+				break;
+			case 2:
+				admin.r.CurvarEsquerda(rand_raio, rand_angulo);
+				textAreaConsola
+						.append("\r" + "Curva Esquerda com raio: " + rand_raio + " e ângulo: " + rand_angulo + "\n");
+				break;
 			}
-			
-			
+
+			// MONITORrobot.sair();
+			// }
+
 			Thread.sleep(250);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 
 	}
-
 
 }

@@ -15,10 +15,12 @@ public class Fugir extends Comportamento {
 	private Random rnd = new Random();
 	//public boolean estaFugir;
 	
-	public Fugir(Administrador Admin, Monitor mon) {
-		super(Admin, mon);
+	public Fugir(Administrador Admin, Object monP, Monitor monR) {
+		super(Admin, monP, monR);
 		this.setName("Fugir");
 		gui_fugir();
+		
+		textAreaConsola.append("\r" + "Fugir inicializado " + "\n");
 	}
 
 
@@ -54,8 +56,8 @@ public class Fugir extends Comportamento {
 
 		int rand_int = rnd.nextInt(2);
 		
-		synchronized(MONITOR) {
-			MONITOR.entrarFugir();
+		//synchronized(MONITORrobot) {
+			//MONITORrobot.entrarFugir();
 			if (admin.r.SensorUS(RobotLegoEV3.S_2) <= 50) {
 				
 				admin.r.SetVelocidade(70);
@@ -83,8 +85,8 @@ public class Fugir extends Comportamento {
 
 				
 			}
-			MONITOR.sair();
-		}
+			//MONITORrobot.sair();
+		//}
 		
 		
 		

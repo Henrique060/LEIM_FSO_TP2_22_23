@@ -6,19 +6,20 @@ import javax.swing.JTextArea;
 
 import fso.trab2.comunicacao.Administrador;
 import fso.trab2.comunicacao.Monitor;
-import robot.RobotLegoEV3;
 
 public abstract class Comportamento extends Thread {
 
 	public Administrador admin;
 	protected Estado estado = Estado.Paused;
-	protected Monitor MONITOR;
+	protected Object MONITORplay;
+	protected Monitor MONITORrobot;
 	
 	//protected JTextArea textAreaConsola;
 	
-	public Comportamento(Administrador Admin, Monitor mon) {
+	public Comportamento(Administrador Admin, Object monP, Monitor monR) {
 		this.admin=Admin;
-		this.MONITOR = mon;
+		this.MONITORplay = monP;
+		this.MONITORrobot = monR;
 	}
 
 	@Override
@@ -36,19 +37,14 @@ public abstract class Comportamento extends Thread {
 
 					break;
 				case Paused:
-					try {
-						MONITOR.entrar();
-						admin.r.Parar(true);
-						MONITOR.sair();
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					//MONITOR.entrar();
+					admin.r.Parar(true);
+					//MONITOR.sair();
 					
 					
-					synchronized (MONITOR) {
+					synchronized (MONITORplay) {
 						try {
-							MONITOR.wait();
+							MONITORplay.wait();
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
@@ -57,6 +53,30 @@ public abstract class Comportamento extends Thread {
 				}
 
 			}
+		
+	}
+	
+	public void work() throws InterruptedException {
+		//implementar no comportamento especifico
+	}
+	
+	
+	public void play() {
+		System.out.println("Played");
+		
+		synchronized (MONITORplay) {
+			estado = Estado.Working;
+			MONITORplay.notify();
+		}
+		 
+	}
+
+	public void pause() throws InterruptedException {
+		System.out.println("Paused");
+		synchronized (MONITORplay) {
+			this.estado = Estado.Paused;
+			this.interrupt();
+		}
 		
 	}
 	
@@ -79,26 +99,5 @@ public abstract class Comportamento extends Thread {
 //		frmGui.setResizable(false);
 //		frmGui.setVisible(true);
 //	}
-	
-	public void work() throws InterruptedException {
-		//implementar no comportamento especifico
-	}
-	
-	
-	public void play() {
-		synchronized (MONITOR) {
-			estado = Estado.Working;
-			MONITOR.notify();
-		}
-		 
-	}
-
-	public void pause() throws InterruptedException {
-		synchronized (MONITOR) {
-			this.estado = Estado.Paused;
-			this.interrupt();
-		}
-		
-	}
 	
 }
