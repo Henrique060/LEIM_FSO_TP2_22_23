@@ -6,48 +6,47 @@ public class Monitor{
 	public Monitor(Administrador admin) {
 		this.admin=admin;
 	}
-
-	public synchronized void entrar() throws InterruptedException {
-		while ( admin.ocupado ) {
-			this.wait();
-		}
-		admin.ocupado = true;
+	
+	public boolean recursoOcupado() {
+		return admin.ocupado == true;
 	}
-
-	public synchronized void sair() throws InterruptedException {
-		admin.ocupado = false;
-		notifyAll();
-	}
+	
+//	public synchronized void entrar() throws InterruptedException {
+//		while ( admin.ocupado ) {
+//			this.wait();
+//		}
+//		admin.ocupado = true;
+//	}
+//
+//	public synchronized void sair() throws InterruptedException {
+//		admin.ocupado = false;
+//		this.notifyAll();
+//	}
 	
 	public synchronized void entrarEvitar() throws InterruptedException {
 		admin.EvitarEspera = true;
-		while (admin.ocupado) {
-			
+		while (recursoOcupado()) {
 			this.wait();
 		}
-		
 		admin.ocupado = true;
 		admin.EvitarEspera = false;
-		
 	}
 	
 	public synchronized void entrarFugir() throws InterruptedException {
 		admin.FugirEspera = true;
-		while ( admin.ocupado || admin.EvitarEspera ) {
-			
+		while (recursoOcupado() || admin.EvitarEspera) {
 			this.wait();
 		}
-		
 		admin.ocupado = true;
 		admin.FugirEspera = false;
-		
 	}
 	
+	
+	
 	public synchronized void entrarVaguear() throws InterruptedException {
-		while (admin.ocupado || admin.EvitarEspera || admin.FugirEspera) {
+		while (recursoOcupado() || admin.EvitarEspera || admin.FugirEspera) {
 			this.wait();
 		}
 		admin.ocupado = true;
-
 	}
 }

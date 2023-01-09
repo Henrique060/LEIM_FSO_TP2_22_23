@@ -8,6 +8,7 @@ import javax.swing.JTextArea;
 
 import fso.trab2.comunicacao.Administrador;
 import fso.trab2.comunicacao.Monitor;
+import fso.trab2.comunicacao.Monitorplay;
 
 //acho que não é necessario se estiver inicializado no super
 //import robot.RobotLegoEV3;
@@ -16,7 +17,7 @@ public class Vaguear extends Comportamento {
 	JTextArea textAreaConsola;
 	private Random rnd;
 
-	public Vaguear(Administrador Admin, Object monP, Monitor monR) {
+	public Vaguear(Administrador Admin, Monitorplay monP, Monitor monR) {
 		super(Admin, monP, monR);
 		this.setName("Vaguear");
 		this.rnd = new Random();

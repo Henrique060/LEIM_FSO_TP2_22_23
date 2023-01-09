@@ -8,6 +8,7 @@ import javax.swing.JTextArea;
 
 import fso.trab2.comunicacao.Administrador;
 import fso.trab2.comunicacao.Monitor;
+import fso.trab2.comunicacao.Monitorplay;
 import robot.RobotLegoEV3;
 
 public class Fugir extends Comportamento {
@@ -15,7 +16,7 @@ public class Fugir extends Comportamento {
 	private Random rnd = new Random();
 	//public boolean estaFugir;
 	
-	public Fugir(Administrador Admin, Object monP, Monitor monR) {
+	public Fugir(Administrador Admin, Monitorplay monP, Monitor monR) {
 		super(Admin, monP, monR);
 		this.setName("Fugir");
 		gui_fugir();
@@ -53,7 +54,7 @@ public class Fugir extends Comportamento {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
 		int rand_int = rnd.nextInt(2);
 		
 		//synchronized(MONITORrobot) {

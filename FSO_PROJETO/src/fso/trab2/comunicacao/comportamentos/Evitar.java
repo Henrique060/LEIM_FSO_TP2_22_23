@@ -7,12 +7,14 @@ import javax.swing.JTextArea;
 
 import fso.trab2.comunicacao.Administrador;
 import fso.trab2.comunicacao.Monitor;
+import fso.trab2.comunicacao.Monitorplay;
 import robot.RobotLegoEV3;
 
 public class Evitar extends Comportamento {
 	JTextArea textAreaConsola;
 	
-	public Evitar(Administrador Admin, Object monP, Monitor monR) {
+	//mudei monP de Object para Monitorplay
+	public Evitar(Administrador Admin, Monitorplay monP, Monitor monR) {
 		super(Admin, monP, monR);
 		this.setName("Evitar");
 		gui_evitar();

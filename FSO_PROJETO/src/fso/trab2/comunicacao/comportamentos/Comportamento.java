@@ -6,22 +6,32 @@ import javax.swing.JTextArea;
 
 import fso.trab2.comunicacao.Administrador;
 import fso.trab2.comunicacao.Monitor;
+import fso.trab2.comunicacao.Monitorplay;
 
 public abstract class Comportamento extends Thread {
 
 	public Administrador admin;
 	protected Estado estado = Estado.Paused;
-	protected Object MONITORplay;
+	//protected Object MONITORplay;
+	protected Monitorplay MONITORplay;
 	protected Monitor MONITORrobot;
 	
 	//protected JTextArea textAreaConsola;
 	
-	public Comportamento(Administrador Admin, Object monP, Monitor monR) {
+	public Comportamento(Administrador Admin, Monitorplay monP, Monitor monR) {
 		this.admin=Admin;
 		this.MONITORplay = monP;
 		this.MONITORrobot = monR;
 	}
 
+	//evitar-1  fugir-2   vaguear-3 
+	
+	//cada vez que evitar começa, os outros deixam
+	//se fugir for ativo, o vaguear cala-se
+	//o vaguear nao tem importancia
+	
+	//dois monitores para comportamentos
+	
 	@Override
 	public void run() {
 			for (;;) {
@@ -60,23 +70,24 @@ public abstract class Comportamento extends Thread {
 		//implementar no comportamento especifico
 	}
 	
-	
-	public void play() {
+	//22h04 adicionei synch igual abaixo 
+	public synchronized void play() {
 		System.out.println("Played");
 		
-		synchronized (MONITORplay) {
+		synchronized (this.MONITORplay) {
 			estado = Estado.Working;
 			MONITORplay.notify();
 		}
 		 
 	}
-
-	public void pause() throws InterruptedException {
+	
+	//22h03 adicionei synch no metodo e removi o comentado MONITORplay
+	public synchronized void pause() throws InterruptedException {
 		System.out.println("Paused");
-		synchronized (MONITORplay) {
+		//synchronized (MONITORplay) {
 			this.estado = Estado.Paused;
 			this.interrupt();
-		}
+		//}
 		
 	}
 	

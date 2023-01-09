@@ -55,7 +55,8 @@ public class Administrador implements ActionListener, KeyListener {
 	private Comportamento thFugir;
 	public boolean fugindo;
 	
-	public Object moniPlayPause;
+	//mudei de Object para Monitorplay
+	public Monitorplay moniPlayPause;
 	public Monitor moniRobot;
 	
 
@@ -82,7 +83,7 @@ public class Administrador implements ActionListener, KeyListener {
 		evitando = false;
 		fugindo = false;
 		
-		moniPlayPause = new Object();
+		moniPlayPause = new Monitorplay(this);
 		moniRobot = new Monitor(this);
 
 		// Launch das threads
