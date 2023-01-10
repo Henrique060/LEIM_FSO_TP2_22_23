@@ -12,87 +12,90 @@ public abstract class Comportamento extends Thread {
 
 	public Administrador admin;
 	protected Estado estado = Estado.Paused;
-	//protected Object MONITORplay;
-	protected Monitorplay MONITORplay;
+	protected final Object MONITORplay = new Object();
 	protected Monitor MONITORrobot;
-	
-	//protected JTextArea textAreaConsola;
-	
-	public Comportamento(Administrador Admin, Monitorplay monP, Monitor monR) {
-		this.admin=Admin;
-		this.MONITORplay = monP;
+
+
+	public Comportamento(Administrador Admin, Monitor monR) {
+		this.admin = Admin;
 		this.MONITORrobot = monR;
 	}
 
-	//evitar-1  fugir-2   vaguear-3 
-	
-	//cada vez que evitar começa, os outros deixam
-	//se fugir for ativo, o vaguear cala-se
-	//o vaguear nao tem importancia
-	
-	//dois monitores para comportamentos
-	
+	// evitar-1 fugir-2 vaguear-3
+
+	// cada vez que evitar começa, os outros deixam
+	// se fugir for ativo, o vaguear cala-se
+	// o vaguear nao tem importancia
+
+	// dois monitores para comportamentos
+
 	@Override
 	public void run() {
-			for (;;) {
-				
-				switch (estado) {
-				case Working:
-					try {
-						this.work();
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-
-					break;
-				case Paused:
-					//MONITOR.entrar();
-					admin.r.Parar(true);
-					//MONITOR.sair();
-					
-					
-					synchronized (MONITORplay) {
-						try {
-							MONITORplay.wait();
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
-					break;
+		for (;;) {
+			switch (estado) {
+			case Working:
+				try {
+					this.work();
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 
+				break;
+			case Paused:
+				try {
+					MONITORrobot.entrar();
+					admin.r.Parar(true);
+					MONITORrobot.sair();
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+				synchronized (this.MONITORplay) {
+					try {
+						MONITORplay.wait();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+					
+				break;
 			}
-		
+
+		}
+
 	}
-	
+
 	public void work() throws InterruptedException {
-		//implementar no comportamento especifico
+		// implementar no comportamento especifico
 	}
-	
-	//22h04 adicionei synch igual abaixo 
+
+	// 22h04 adicionei synch igual abaixo
 	public synchronized void play() {
-		System.out.println("Played");
-		
+
 		synchronized (this.MONITORplay) {
 			estado = Estado.Working;
-			MONITORplay.notify();
+			MONITORplay.notifyAll();
 		}
-		 
+		System.out.println("Played");
+
 	}
-	
-	//22h03 adicionei synch no metodo e removi o comentado MONITORplay
+
+	// 22h03 adicionei synch no metodo e removi o comentado MONITORplay
 	public synchronized void pause() throws InterruptedException {
+
+		synchronized (MONITORplay) {
+		this.estado = Estado.Paused;
+		//this.interrupt();
+		}
 		System.out.println("Paused");
-		//synchronized (MONITORplay) {
-			this.estado = Estado.Paused;
-			this.interrupt();
-		//}
-		
 	}
-	
-	// TODO - como as UIs são todas iguais devia dar para serem parte do super, mas dá erro
-	
+
+	// TODO - como as UIs são todas iguais devia dar para serem parte do super, mas
+	// dá erro
+
 //	public void gui(String title) {
 //		JFrame frmGui = new JFrame();
 //		frmGui.setTitle(title);
@@ -110,5 +113,5 @@ public abstract class Comportamento extends Thread {
 //		frmGui.setResizable(false);
 //		frmGui.setVisible(true);
 //	}
-	
+
 }

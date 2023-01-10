@@ -1,5 +1,7 @@
 package fso.trab2.comunicacao.comportamentos;
 
+import java.time.Instant;
+
 import javax.swing.JFrame;
 
 import javax.swing.JScrollPane;
@@ -14,8 +16,8 @@ public class Evitar extends Comportamento {
 	JTextArea textAreaConsola;
 	
 	//mudei monP de Object para Monitorplay
-	public Evitar(Administrador Admin, Monitorplay monP, Monitor monR) {
-		super(Admin, monP, monR);
+	public Evitar(Administrador Admin, Monitor monR) {
+		super(Admin, monR);
 		this.setName("Evitar");
 		gui_evitar();
 		
@@ -54,8 +56,10 @@ public class Evitar extends Comportamento {
 			e.printStackTrace();
 		}
 		
-		//synchronized(MONITORrobot) {
-			//MONITORrobot.entrarEvitar();
+		synchronized(MONITORrobot) {
+			MONITORrobot.entrarEvitar();
+			Instant now = Instant.now();
+			 System.out.println("Evitar: Doing some task... at " + now);
 			if (admin.r.SensorToque(RobotLegoEV3.S_1) == 1) {
 				
 				admin.r.Parar(true);
@@ -75,8 +79,8 @@ public class Evitar extends Comportamento {
 			}else {
 				textAreaConsola.append("\r" + "Nao ha toque" + "\n");
 			}
-			//MONITORrobot.sair();
-		//}
+			MONITORrobot.sair();
+		}
 		
 
 			

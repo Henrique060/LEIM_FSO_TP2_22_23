@@ -1,5 +1,6 @@
 package fso.trab2.comunicacao.comportamentos;
 
+import java.time.Instant;
 import java.util.Random;
 
 import javax.swing.JFrame;
@@ -10,15 +11,14 @@ import fso.trab2.comunicacao.Administrador;
 import fso.trab2.comunicacao.Monitor;
 import fso.trab2.comunicacao.Monitorplay;
 
-//acho que não é necessario se estiver inicializado no super
-//import robot.RobotLegoEV3;
+
 
 public class Vaguear extends Comportamento {
 	JTextArea textAreaConsola;
 	private Random rnd;
 
-	public Vaguear(Administrador Admin, Monitorplay monP, Monitor monR) {
-		super(Admin, monP, monR);
+	public Vaguear(Administrador Admin, Monitor monR) {
+		super(Admin, monR);
 		this.setName("Vaguear");
 		this.rnd = new Random();
 
@@ -47,7 +47,6 @@ public class Vaguear extends Comportamento {
 	}
 
 	public void work() {
-
 		try {
 			// criar os random ints dentro do for para que
 			// cada iteração tenha o seu numero proprio
@@ -58,10 +57,13 @@ public class Vaguear extends Comportamento {
 			// random para decidir qual a usar
 			int escolhida = rnd.nextInt(3);
 
-			// synchronized(MONITORrobot) {
-			// MONITORrobot.entrarVaguear();
+			 synchronized(MONITORrobot) {
+			 MONITORrobot.entrarVaguear();
+			 Instant now = Instant.now();
+			 System.out.println("Vaguear: Doing some task... at " + now);
 			switch (escolhida) {
 			case 0:
+				
 				admin.r.Reta(rand_int);
 				textAreaConsola.append("\r" + "Reta com distância: " + rand_int + "\n");
 				break;
@@ -77,8 +79,8 @@ public class Vaguear extends Comportamento {
 				break;
 			}
 
-			// MONITORrobot.sair();
-			// }
+			 MONITORrobot.sair();
+			}
 
 			Thread.sleep(250);
 		} catch (Exception ex) {

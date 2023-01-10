@@ -1,5 +1,6 @@
 package fso.trab2.comunicacao.comportamentos;
 
+import java.time.Instant;
 import java.util.Random;
 
 import javax.swing.JFrame;
@@ -16,8 +17,8 @@ public class Fugir extends Comportamento {
 	private Random rnd = new Random();
 	//public boolean estaFugir;
 	
-	public Fugir(Administrador Admin, Monitorplay monP, Monitor monR) {
-		super(Admin, monP, monR);
+	public Fugir(Administrador Admin, Monitor monR) {
+		super(Admin, monR);
 		this.setName("Fugir");
 		gui_fugir();
 		
@@ -57,8 +58,10 @@ public class Fugir extends Comportamento {
 		
 		int rand_int = rnd.nextInt(2);
 		
-		//synchronized(MONITORrobot) {
-			//MONITORrobot.entrarFugir();
+		synchronized(MONITORrobot) {
+			MONITORrobot.entrarFugir();
+			Instant now = Instant.now();
+			 System.out.println("Fugir: Doing some task... at " + now);
 			if (admin.r.SensorUS(RobotLegoEV3.S_2) <= 50) {
 				
 				admin.r.SetVelocidade(70);
@@ -72,13 +75,13 @@ public class Fugir extends Comportamento {
 					e.printStackTrace();
 				}
 				
-				if (rand_int == 1 || rand_int == 0) {
+				if (rand_int == 1) {
 					admin.r.CurvarDireita(0, 90);
 					textAreaConsola.append("\r" + "Curva Direita com raio: 0" + " e ângulo: 90" + "\n");
-				} //else {
-//					admin.r.CurvarEsquerda(0, 90);
-//					textAreaConsola.append("\r" + "Curva Esquerda com raio: 0" + " e ângulo: 90" + "\n");
-//				}
+				} else {
+					admin.r.CurvarEsquerda(0, 90);
+					textAreaConsola.append("\r" + "Curva Esquerda com raio: 0" + " e ângulo: 90" + "\n");
+				}
 				admin.r.SetVelocidade(50);
 				admin.r.Reta(1);
 				admin.r.Parar(false);
@@ -86,8 +89,8 @@ public class Fugir extends Comportamento {
 
 				
 			}
-			//MONITORrobot.sair();
-		//}
+			MONITORrobot.sair();
+		}
 		
 		
 		

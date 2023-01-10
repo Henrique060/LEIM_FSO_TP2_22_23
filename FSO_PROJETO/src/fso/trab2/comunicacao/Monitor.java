@@ -11,17 +11,17 @@ public class Monitor{
 		return admin.ocupado == true;
 	}
 	
-//	public synchronized void entrar() throws InterruptedException {
-//		while ( admin.ocupado ) {
-//			this.wait();
-//		}
-//		admin.ocupado = true;
-//	}
-//
-//	public synchronized void sair() throws InterruptedException {
-//		admin.ocupado = false;
-//		this.notifyAll();
-//	}
+	public synchronized void entrar() throws InterruptedException {
+		while ( admin.ocupado ) {
+			this.wait();
+		}
+		admin.ocupado = true;
+	}
+
+	public synchronized void sair() throws InterruptedException {
+		admin.ocupado = false;
+		this.notifyAll();
+	}
 	
 	public synchronized void entrarEvitar() throws InterruptedException {
 		admin.EvitarEspera = true;
@@ -40,8 +40,6 @@ public class Monitor{
 		admin.ocupado = true;
 		admin.FugirEspera = false;
 	}
-	
-	
 	
 	public synchronized void entrarVaguear() throws InterruptedException {
 		while (recursoOcupado() || admin.EvitarEspera || admin.FugirEspera) {

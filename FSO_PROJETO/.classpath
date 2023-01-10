@@ -2,5 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_261"/>
+	<classpathentry kind="lib" path="C:/Users/Beatriz/Documents/MyDocumentsFolder/Universidade/jdk1.8.0_261/jre/lib/ext/RobotLegoEV3_2023.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
