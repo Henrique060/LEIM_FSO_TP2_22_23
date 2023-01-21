@@ -68,9 +68,13 @@ public class Administrador implements ActionListener, KeyListener {
 
 	public Administrador() {
 		initialize();
+		
 		frmGuiDoAdmin.addKeyListener(this);
 		frmGuiDoAdmin.setResizable(false);
 		frmGuiDoAdmin.setVisible(true);
+		thVaguear.start();
+		thEvitar.start();
+		thFugir.start();
 	}
 
 	/**
@@ -145,7 +149,6 @@ public class Administrador implements ActionListener, KeyListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				r.OpenEV3(textNome.getText());
 				if (r.OpenEV3(textNome.getText()) == false) {
 
 					textAreaConsola.append("\r" + "Robot  not ON" + "\n");
@@ -161,9 +164,7 @@ public class Administrador implements ActionListener, KeyListener {
 				}
 				
 				
-				thVaguear.start();
-				thEvitar.start();
-				thFugir.start();
+				
 				
 			}
 
